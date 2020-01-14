@@ -86,6 +86,17 @@ public interface BattleshipGame {
     void guess(Player player, int x, int y, BiConsumer<Boolean, Boolean> result);
 
     /**
+     * Guess a position on player's adversary board. Throws exception if the game state is not started.
+     * @param player
+     * Player guessing
+     * @param x
+     * x position
+     * @param y
+     * y position
+     */
+    void guess(Player player, int x, int y);
+
+    /**
      * The player that is winning the game 
      * @return
      * An optional containing the player or empty if the game is not started.

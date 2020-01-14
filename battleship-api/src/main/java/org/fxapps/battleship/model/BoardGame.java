@@ -50,7 +50,7 @@ public class BoardGame {
         return game;
     }
 
-    void guess(Player player, int x, int y) {
+    boolean guess(Player player, int x, int y) {
         if (player != currentPlayer) {
             throw new IllegalArgumentException(MSG_WRONG_PLAYER);
         }
@@ -61,6 +61,7 @@ public class BoardGame {
         guesses.get(currentPlayer).add(Guess.create(x, y, hit));
         updateSinkShipsBy(player);
         currentPlayer = currentPlayer == player1 ? player2 : player1;
+        return hit;
     }
 
     private void checkDuplicateGuess(Player player, int x, int y) {

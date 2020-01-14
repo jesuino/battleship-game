@@ -127,6 +127,24 @@ public class GameManagerTest {
         var e = assertThrows(IllegalStateException.class, () -> gameManager.guess(player1, 0, 0));
         assertEquals(GameManager.MSG_NOT_THE_STATUS_TO_ATTACK, e.getMessage());
     }
+    
+    @Test
+    public void guessResultWasAHitAndNotSunkenTest() {
+        // TODO: Implement
+        throw new RuntimeException();
+    }
+    
+    @Test
+    public void guessResultWasAHitAndSunkenTest() {
+        // TODO: Implement
+        throw new RuntimeException();
+    }
+    
+    @Test
+    public void guessResultWasAMissAndNotSunkenTest() {
+        // TODO: Implement
+        throw new RuntimeException();
+    }
 
     @Test
     public void abortTest() {

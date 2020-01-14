@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -103,12 +104,19 @@ public class GameManager implements BattleshipGame {
 
     @Override
     public void guess(Player player, int x, int y) {
+        guess(player, x, y, (a, b) -> {
+        });
+    }
+
+    @Override
+    public void guess(Player player, int x, int y, BiConsumer<Boolean, Boolean> result) {
         if (state != GameState.STARTED) {
             throw new IllegalStateException(MSG_NOT_THE_STATUS_TO_ATTACK);
         }
-        boardGame.guess(player, x, y);
+        var nSunkenShips = boardGame.shipsSunkenBy(player);
+        var hit = boardGame.guess(player, x, y);
         verifyGameIsOver();
-        // TODO: return hit and sunken ships
+        result.accept(hit, nSunkenShips > boardGame.shipsSunkenBy(player));
     }
 
     @Override
