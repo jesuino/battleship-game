@@ -39,13 +39,20 @@ public class Board {
         setShipPositionState(shipPosition, true);
     }
 
+    /**
+     * 
+     * Removes all positions with a given ship
+     * @param ship
+     * @return
+     * true if some ship was removed, false otherwise
+     */
     public boolean removeShip(Ship ship) {
         final var shipsToRemove = shipsPositions.stream()
                                                 .filter(sp -> sp.getShip() == ship)
                                                 .collect(Collectors.toList());
-        shipsToRemove.forEach(sp -> setShipPositionState(sp, false));
         shipsPositions.removeAll(shipsToRemove);
-        return shipsToRemove.isEmpty();
+        shipsToRemove.forEach(sp -> setShipPositionState(sp, false));
+        return !shipsToRemove.isEmpty();
     }
 
     boolean stateAt(int x, int y) {
