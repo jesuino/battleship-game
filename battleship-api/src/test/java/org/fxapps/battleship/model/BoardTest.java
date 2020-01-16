@@ -21,15 +21,15 @@ public class BoardTest {
     
     @Test
     public void initConditionsTest() {
-        assertEquals(Board.COLS, board.getCols());
-        assertEquals(Board.ROWS, board.getRows());
+        assertEquals(Board.DEFAULT_COLS, board.getCols());
+        assertEquals(Board.DEFAULT_ROWS, board.getRows());
     }
     
 
     @Test
     public void outOfRangeShipPositionTest() {
         var exception = assertThrows(IllegalArgumentException.class,
-                                     () -> board.placeShip(ShipPosition.vertical(Ship.BATTLESHIP, Board.ROWS, 0)));
+                                     () -> board.placeShip(ShipPosition.vertical(Ship.BATTLESHIP, Board.DEFAULT_ROWS, 0)));
         assertEquals(Board.MSG_OUT_OF_RANGE, exception.getMessage());
     }
 
@@ -56,14 +56,14 @@ public class BoardTest {
     @Test
     public void outOfRangeShipSizeTest() {
         var exception = assertThrows(IllegalArgumentException.class,
-                                     () -> board.placeShip(ShipPosition.vertical(CARRIER, 0, Board.ROWS - 2)));
+                                     () -> board.placeShip(ShipPosition.vertical(CARRIER, 0, Board.DEFAULT_ROWS - 2)));
         assertEquals(Board.MSG_SHIP_OUT_OF_RANGE, exception.getMessage());
     }
 
     @Test
     public void outOfRangeHorizontalShipSizeTest() {
         var exception = assertThrows(IllegalArgumentException.class,
-                                     () -> board.placeShip(ShipPosition.horizontal(CARRIER, Board.COLS - 2, 0)));
+                                     () -> board.placeShip(ShipPosition.horizontal(CARRIER, Board.DEFAULT_COLS - 2, 0)));
         assertEquals(Board.MSG_SHIP_OUT_OF_RANGE, exception.getMessage());
     }
 

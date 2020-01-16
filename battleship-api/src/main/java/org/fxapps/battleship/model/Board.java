@@ -7,11 +7,11 @@ import java.util.stream.Collectors;
 
 public class Board {
 
-    public static final int ROWS = 10;
-    public static final int COLS = 10;
+    public static final int DEFAULT_ROWS = 10;
+    public static final int DEFAULT_COLS = 10;
 
     public static final String MSG_OUT_OF_RANGE = String.format("You can't set a position out of range. (MAX X is %d and MAX Y is %d).",
-                                                                COLS, ROWS);
+                                                                DEFAULT_COLS, DEFAULT_ROWS);
     public static final String MSG_SHIP_OUT_OF_RANGE = "The ship is out of the board boundaries.";
     public static final String MSG_SHIP_CONFLICT = "The ship conflicts with another ship.";
 
@@ -21,7 +21,7 @@ public class Board {
     private int cols;
 
     public static Board create() {
-        return create(ROWS, COLS);
+        return create(DEFAULT_ROWS, DEFAULT_COLS);
     }
 
     public static Board create(int rows, int cols) {
@@ -42,10 +42,10 @@ public class Board {
     public boolean removeShip(Ship ship) {
         final var shipsToRemove = shipsPositions.stream()
                                                 .filter(sp -> sp.getShip() == ship)
-                                                .peek(sp -> setShipPositionState(sp, false))
                                                 .collect(Collectors.toList());
+        shipsToRemove.forEach(sp -> setShipPositionState(sp, false));
         shipsPositions.removeAll(shipsToRemove);
-        return shipsToRemove.size() > 0;
+        return shipsToRemove.isEmpty();
     }
 
     boolean stateAt(int x, int y) {
@@ -54,7 +54,7 @@ public class Board {
     }
 
     void checkPositions(int x, int y) {
-        if (x >= COLS || y >= ROWS) {
+        if (x >= DEFAULT_COLS || y >= DEFAULT_ROWS) {
             throw new IllegalArgumentException(MSG_OUT_OF_RANGE);
         }
     }
@@ -99,7 +99,7 @@ public class Board {
     }
 
     private void validateVerticalShip(int x, int y, int endY) {
-        if (endY >= ROWS) {
+        if (endY >= DEFAULT_ROWS) {
             throw new IllegalArgumentException(MSG_SHIP_OUT_OF_RANGE);
         }
 
@@ -111,7 +111,7 @@ public class Board {
     }
 
     private void validateHorizontalShip(int x, int y, int endX) {
-        if (endX >= COLS) {
+        if (endX >= DEFAULT_COLS) {
             throw new IllegalArgumentException(MSG_SHIP_OUT_OF_RANGE);
         }
 

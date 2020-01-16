@@ -171,7 +171,7 @@ public class GameManager implements BattleshipGame {
         var shipPosition = ShipPosition.create(ship, x, y, isVertical);
         var currentShipsPositionsStream = boardGame.getBoard(player).getShipsPositions().stream();
         var shipsToValidate = Stream.concat(currentShipsPositionsStream, Stream.of(shipPosition))
-                                    .map(p -> p.getShip())
+                                    .map(ShipPosition::getShip)
                                     .collect(Collectors.toList());
         validateShips(shipsToValidate);
         boardGame.getBoard(player).placeShip(shipPosition);

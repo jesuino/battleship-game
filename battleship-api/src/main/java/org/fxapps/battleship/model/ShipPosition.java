@@ -3,7 +3,10 @@ package org.fxapps.battleship.model;
 public class ShipPosition {
 
     private Ship ship;
-    private int x, y, endX, endY;
+    private int x;
+    private int y;
+    private int endX;
+    private int endY;
     private boolean isVertical;
 
     public static ShipPosition horizontal(Ship ship, int x, int y) {

@@ -184,7 +184,7 @@ public class GameManagerTest {
         gameManager.ready(boardGame.player2());
         gameManager.start();
         Player player = gameManager.playerTurn().get();
-        gameManager.guess(player, 0, Board.ROWS - 1, (hit, sink) -> {
+        gameManager.guess(player, 0, Board.DEFAULT_ROWS - 1, (hit, sink) -> {
             assertFalse(hit);
             assertFalse(sink);
         });

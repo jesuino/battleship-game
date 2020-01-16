@@ -30,7 +30,8 @@ public class BoardGame {
 
     private Player currentPlayer;
 
-    private Player player1, player2;
+    private Player player1;
+    private Player player2;
 
     private Map<Player, Board> playerBoard = new HashMap<>();
     private Map<Player, List<Guess>> guesses = new HashMap<>();
@@ -175,7 +176,7 @@ public class BoardGame {
     }
 
     static boolean containsPosition(Collection<Guess> guesses, int x, int y) {
-        return guesses.stream().filter(g -> g.getX() == x && g.getY() == y).findFirst().isPresent();
+        return guesses.stream().anyMatch(g -> g.getX() == x && g.getY() == y);
 
     }
 
