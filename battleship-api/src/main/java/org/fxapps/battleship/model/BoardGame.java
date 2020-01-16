@@ -65,14 +65,6 @@ public class BoardGame {
         return hit;
     }
 
-    private void checkDuplicateGuess(Player player, int x, int y) {
-        guesses.get(player)
-               .stream().filter(g -> g.getX() == x && g.getY() == y)
-               .findFirst().ifPresent(g -> {
-                   throw new IllegalArgumentException(MSG_DUPLICATED_GUESS);
-               });
-    }
-
     /**
      * Calculate the winner
      * 
@@ -143,6 +135,14 @@ public class BoardGame {
         sunkShips.forEach(sunkenShipsByPlayer.get(player)::add);
     }
 
+    private void checkDuplicateGuess(Player player, int x, int y) {
+        guesses.get(player)
+               .stream().filter(g -> g.getX() == x && g.getY() == y)
+               .findFirst().ifPresent(g -> {
+                   throw new IllegalArgumentException(MSG_DUPLICATED_GUESS);
+               });
+    }    
+    
     static List<ShipPosition> getSunkShips(Collection<ShipPosition> positions,
                                            Collection<Guess> guesses) {
         return getSunkShips(positions, guesses, Collections.emptyList());

@@ -3,6 +3,8 @@ package org.fxapps.battleship;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
+import org.fxapps.battleship.model.BoardGame;
+import org.fxapps.battleship.model.GameManager;
 import org.fxapps.battleship.model.GameStats;
 import org.fxapps.battleship.model.Player;
 import org.fxapps.battleship.model.Ship;
@@ -125,5 +127,10 @@ public interface BattleshipGame {
      * @return
      */
     Optional<Player> waitingPlayer();
+
+    public static BattleshipGame create(Player player1, Player player2) {
+        BoardGame boardGame = BoardGame.create(player1, player2);
+        return GameManager.create(boardGame);
+    }
 
 }

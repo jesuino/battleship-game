@@ -46,7 +46,7 @@ public class Board {
      * @return
      * true if some ship was removed, false otherwise
      */
-    public boolean removeShip(Ship ship) {
+    boolean removeShip(Ship ship) {
         final var shipsToRemove = shipsPositions.stream()
                                                 .filter(sp -> sp.getShip() == ship)
                                                 .collect(Collectors.toList());
