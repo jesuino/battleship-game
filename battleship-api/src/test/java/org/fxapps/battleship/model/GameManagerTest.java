@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -51,7 +52,7 @@ public class GameManagerTest {
 
     @Test
     public void doesNotStartIfNotReadyTest() {
-        var e = assertThrows(IllegalStateException.class, () -> gameManager.start());
+        var e = assertThrows(IllegalStateException.class, gameManager::start);
         assertEquals(GameManager.MSG_GAME_NOT_READY, e.getMessage());
     }
 
@@ -83,7 +84,7 @@ public class GameManagerTest {
         var e = assertThrows(IllegalStateException.class, () -> gameManager.ready(player2));
         assertEquals(GameManager.MSG_PLAYER_MISSING_SHIPS, e.getMessage());
     }
-    
+
     @Test
     public void cannotRemoveShipTest() {
         addAllShipsToAllPlayers();
@@ -93,7 +94,7 @@ public class GameManagerTest {
         Exception e = assertThrows(IllegalStateException.class, () -> gameManager.removeShip(player1, Ship.BATTLESHIP));
         assertEquals(GameManager.MSG_NOT_THE_STATE_TO_REMOVE_SHIPS, e.getMessage());
     }
-    
+
     @Test
     public void stateChangeAfterRemovingShipTest() {
         addAllShipsToAllPlayers();
@@ -109,7 +110,7 @@ public class GameManagerTest {
         addAllShipsToAllPlayers();
         gameManager.removeShip(player1, Ship.BATTLESHIP);
         assertEquals(GameState.PREPARATION, gameManager.state());
-        var e = assertThrows(IllegalStateException.class, () -> gameManager.start());
+        var e = assertThrows(IllegalStateException.class, gameManager::start);
         assertEquals(GameManager.MSG_GAME_NOT_READY, e.getMessage());
     }
 
@@ -117,7 +118,7 @@ public class GameManagerTest {
     public void cannotStartIfPlayerIsntReadyTest() {
         addAllShipsToAllPlayers();
         gameManager.ready(player2);
-        var e = assertThrows(IllegalStateException.class, () -> gameManager.start());
+        var e = assertThrows(IllegalStateException.class, gameManager::start);
         var expectedMessage = String.format(GameManager.MSG_PLAYER_NOT_STARTED, player1.getName());
         assertEquals(expectedMessage, e.getMessage());
     }
@@ -127,23 +128,66 @@ public class GameManagerTest {
         var e = assertThrows(IllegalStateException.class, () -> gameManager.guess(player1, 0, 0));
         assertEquals(GameManager.MSG_NOT_THE_STATUS_TO_ATTACK, e.getMessage());
     }
-    
+
     @Test
     public void guessResultWasAHitAndNotSunkenTest() {
-        // TODO: Implement
-        throw new RuntimeException();
+        addAllShipsToAllPlayers();
+        gameManager.ready(boardGame.player1());
+        gameManager.ready(boardGame.player2());
+        gameManager.start();
+        Player player = gameManager.playerTurn().get();
+        gameManager.guess(player, 0, 0, (hit, sink) -> {
+            assertTrue(hit);
+            assertFalse(sink);
+        });
     }
-    
+
     @Test
     public void guessResultWasAHitAndSunkenTest() {
-        // TODO: Implement
-        throw new RuntimeException();
+        addAllShipsToAllPlayers();
+        gameManager.ready(boardGame.player1());
+        gameManager.ready(boardGame.player2());
+        gameManager.start();
+        Player player = gameManager.playerTurn().get();
+        Player waitingPlayer = gameManager.waitingPlayer().get();
+        ShipPosition shipPosition = gameManager.getBoardGame()
+                                               .getBoard(waitingPlayer)
+                                               .getShipsPositions().get(0);
+        if (shipPosition.isVertical()) {
+            for (int i = shipPosition.getY(); i < shipPosition.getEndY() - 1; i++) {
+                gameManager.guess(player, shipPosition.getX(), i);
+                gameManager.guess(waitingPlayer, shipPosition.getX(), i);
+            }
+            gameManager.guess(player, shipPosition.getX(), shipPosition.getEndY() - 1,
+                              (hit, sink) -> {
+                                  assertTrue(hit);
+                                  assertTrue(sink);
+                              });
+        } else {
+            for (int i = shipPosition.getX(); i < shipPosition.getEndX() - 1; i++) {
+                gameManager.guess(player, i, shipPosition.getY());
+                gameManager.guess(waitingPlayer, i, shipPosition.getY());
+            }
+            gameManager.guess(player, shipPosition.getEndX(), shipPosition.getY(),
+                              (hit, sink) -> {
+                                  assertTrue(hit);
+                                  assertTrue(sink);
+                              });
+        }
+
     }
-    
+
     @Test
     public void guessResultWasAMissAndNotSunkenTest() {
-        // TODO: Implement
-        throw new RuntimeException();
+        addAllShipsToAllPlayers();
+        gameManager.ready(boardGame.player1());
+        gameManager.ready(boardGame.player2());
+        gameManager.start();
+        Player player = gameManager.playerTurn().get();
+        gameManager.guess(player, 0, Board.ROWS - 1, (hit, sink) -> {
+            assertFalse(hit);
+            assertFalse(sink);
+        });
     }
 
     @Test

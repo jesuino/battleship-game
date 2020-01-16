@@ -1,7 +1,6 @@
 package org.fxapps.battleship.model;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -68,8 +67,8 @@ public class Board {
         return cols;
     }
 
-    Collection<ShipPosition> getShipsPositions() {
-        return Collections.unmodifiableCollection(shipsPositions);
+    List<ShipPosition> getShipsPositions() {
+        return Collections.unmodifiableList(shipsPositions);
     }
 
     private void setShipPositionState(ShipPosition shipPosition, Boolean value) {

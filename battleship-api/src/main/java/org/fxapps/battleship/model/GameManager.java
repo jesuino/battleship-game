@@ -116,7 +116,7 @@ public class GameManager implements BattleshipGame {
         var nSunkenShips = boardGame.shipsSunkenBy(player);
         var hit = boardGame.guess(player, x, y);
         verifyGameIsOver();
-        result.accept(hit, nSunkenShips > boardGame.shipsSunkenBy(player));
+        result.accept(hit, boardGame.shipsSunkenBy(player) > nSunkenShips);
     }
 
     @Override
