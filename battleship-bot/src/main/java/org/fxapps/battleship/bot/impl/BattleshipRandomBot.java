@@ -6,50 +6,49 @@ import java.util.Set;
 
 import org.fxapps.battleship.bot.BattleshipBot;
 import org.fxapps.battleship.model.Board;
-import org.fxapps.battleship.model.Guess;
+import org.fxapps.battleship.model.Location;
 import org.fxapps.battleship.model.Player;
 
 public class BattleshipRandomBot extends Player implements BattleshipBot {
 
     static final String MSG_NO_MORE_GUESS = "No more Guess!";
     Random random = new Random();
-    Set<Guess> history = new HashSet<>();
+    Set<Location> history = new HashSet<>();
 
     public BattleshipRandomBot() {
         super("Random Bot");
     }
 
     @Override
-    public Guess newGuess(Board botBoard) {
+    public Location newLocation(Board botBoard) {
         final var rows = botBoard.getRows();
         final var cols = botBoard.getCols();
         final var maxGuess = rows * cols;
-        var x = random.nextInt(cols);
-        var y = random.nextInt(rows);
+        var location = Location.of(random.nextInt(cols),
+                                   random.nextInt(rows));
         var maxAttempts = maxGuess;
         if (maxGuess == history.size()) {
             throw new IllegalStateException(MSG_NO_MORE_GUESS);
         }
         boolean changedY = false;
-        while (containsGuess(x, y) && maxAttempts > 0) {
+        while (containsLocation(location) && maxAttempts > 0) {
             if (changedY) {
-                x = x < cols ? x + 1 : 0;
+                var x = location.getX() < cols ? location.getX() + 1 : 0;
+                location = Location.of(x, location.getY());
                 changedY = false;
             } else {
-                y = y < rows ? y + 1 : 0;
+                var y = location.getY() < rows ? location.getY() + 1 : 0;
+                location = Location.of(location.getX(), y);
                 changedY = true;
             }
             maxAttempts--;
         }
-        Guess miss = Guess.miss(x, y);
-        history.add(miss);
-        return miss;
+        history.add(location);
+        return location;
     }
 
-    private boolean containsGuess(int x, int y) {
-        return history.stream()
-                      .anyMatch(guess -> guess.getX() == x &&
-                                         guess.getY() == y);
+    private boolean containsLocation(Location location) {
+        return history.contains(location);
     }
 
 }

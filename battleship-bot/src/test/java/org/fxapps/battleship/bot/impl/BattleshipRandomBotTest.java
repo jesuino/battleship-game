@@ -20,7 +20,7 @@ class BattleshipRandomBotTest {
 
     @Test
     void newGuessTest() {
-        bot.newGuess(board);
+        bot.newLocation(board);
         assertEquals(1, bot.history.size());
     }
 
@@ -29,11 +29,11 @@ class BattleshipRandomBotTest {
         final int totalGuess = board.getCols() * board.getRows();
         int guessCount = totalGuess;
         while (guessCount > 0) {
-            bot.newGuess(board);
+            bot.newLocation(board);
             guessCount--;
         }
         assertEquals(totalGuess, bot.history.size());
-        Exception e = assertThrows(IllegalStateException.class, () -> bot.newGuess(board));
+        Exception e = assertThrows(IllegalStateException.class, () -> bot.newLocation(board));
         assertEquals(BattleshipRandomBot.MSG_NO_MORE_GUESS, e.getMessage());
     }
 

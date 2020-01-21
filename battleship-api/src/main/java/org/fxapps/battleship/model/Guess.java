@@ -2,8 +2,7 @@ package org.fxapps.battleship.model;
 
 public class Guess {
 
-    private int x;
-    private int y;
+    private Location location;
     private boolean hit;
 
     private Guess() {
@@ -20,18 +19,13 @@ public class Guess {
 
     public static Guess create(int x, int y, boolean hit) {
         Guess guess = new Guess();
-        guess.x = x;
-        guess.y = y;
+        guess.location = Location.of(x, y);
         guess.hit = hit;
         return guess;
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
+    public Location getLocation() {
+        return location;
     }
 
     public boolean isHit() {

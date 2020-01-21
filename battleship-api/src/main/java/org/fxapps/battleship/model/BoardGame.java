@@ -136,13 +136,14 @@ public class BoardGame {
     }
 
     private void checkDuplicateGuess(Player player, int x, int y) {
+        Location location = Location.of(x, y);
         guesses.get(player)
-               .stream().filter(g -> g.getX() == x && g.getY() == y)
+               .stream().filter(g -> g.getLocation() == location)
                .findFirst().ifPresent(g -> {
                    throw new IllegalArgumentException(MSG_DUPLICATED_GUESS);
                });
-    }    
-    
+    }
+
     static List<ShipPosition> getSunkShips(Collection<ShipPosition> positions,
                                            Collection<Guess> guesses) {
         return getSunkShips(positions, guesses, Collections.emptyList());
@@ -176,7 +177,7 @@ public class BoardGame {
     }
 
     static boolean containsPosition(Collection<Guess> guesses, int x, int y) {
-        return guesses.stream().anyMatch(g -> g.getX() == x && g.getY() == y);
+        return guesses.stream().anyMatch(g -> g.getLocation() == Location.of(x, y));
 
     }
 
