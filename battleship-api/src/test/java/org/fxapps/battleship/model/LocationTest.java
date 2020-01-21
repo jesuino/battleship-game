@@ -9,7 +9,6 @@ public class LocationTest {
     @Test
     public void immutabilityTest() {
         assertEquals(Location.of(0, 0), Location.of(0, 0));
-
     }
 
 }

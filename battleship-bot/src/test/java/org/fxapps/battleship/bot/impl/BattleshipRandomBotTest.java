@@ -28,7 +28,7 @@ class BattleshipRandomBotTest {
     void noMoreGuessTest() {
         final int totalGuess = board.getCols() * board.getRows();
         int guessCount = totalGuess;
-        while (guessCount > 0) {
+        while (guessCount != 0) {
             bot.newLocation(board);
             guessCount--;
         }

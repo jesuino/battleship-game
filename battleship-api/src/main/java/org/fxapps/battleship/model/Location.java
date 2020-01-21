@@ -17,6 +17,10 @@ public class Location {
 
     private Location() {}
 
+    public static Location initial() {
+        return of(0, 0);
+    }
+
     public static Location of(int x, int y) {
         return cache.stream()
                     .filter(l -> l.x == x && l.y == y)
@@ -25,6 +29,14 @@ public class Location {
                         cache.add(location);
                         return location;
                     });
+    }
+
+    public Location withX(int x) {
+        return of(x, this.y);
+    }
+
+    public Location withY(int y) {
+        return of(x, y);
     }
 
     public int getX() {

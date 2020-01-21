@@ -26,29 +26,23 @@ public class BattleshipRandomBot extends Player implements BattleshipBot {
         final var maxGuess = rows * cols;
         var location = Location.of(random.nextInt(cols),
                                    random.nextInt(rows));
-        var maxAttempts = maxGuess;
+
         if (maxGuess == history.size()) {
             throw new IllegalStateException(MSG_NO_MORE_GUESS);
         }
-        boolean changedY = false;
-        while (containsLocation(location) && maxAttempts > 0) {
-            if (changedY) {
-                var x = location.getX() < cols ? location.getX() + 1 : 0;
-                location = Location.of(x, location.getY());
-                changedY = false;
-            } else {
-                var y = location.getY() < rows ? location.getY() + 1 : 0;
-                location = Location.of(location.getX(), y);
-                changedY = true;
+
+        for (int i = 0; i < cols && history.contains(location); i++) {
+            var x = location.getX();
+            x = x < cols - 1 ? x + 1 : 0;
+            location = location.withX(x);
+            for (int j = 0; j < rows && history.contains(location); j++) {
+                var y = location.getY();
+                y = y < rows - 1 ? y + 1 : 0;
+                location = location.withY(y);
             }
-            maxAttempts--;
         }
         history.add(location);
         return location;
-    }
-
-    private boolean containsLocation(Location location) {
-        return history.contains(location);
     }
 
 }
