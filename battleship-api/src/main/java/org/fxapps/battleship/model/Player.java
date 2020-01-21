@@ -2,11 +2,9 @@ package org.fxapps.battleship.model;
 
 public class Player {
 
-    String name;
+    protected String name;
 
-    private Player() {}
-
-    private Player(String name) {
+    public Player(String name) {
         this.name = name;
     }
 

@@ -66,15 +66,15 @@ public class Board {
         }
     }
 
-    int getRows() {
+    public int getRows() {
         return rows;
     }
 
-    int getCols() {
+    public int getCols() {
         return cols;
     }
 
-    List<ShipPosition> getShipsPositions() {
+    public List<ShipPosition> getShipsPositions() {
         return Collections.unmodifiableList(shipsPositions);
     }
 

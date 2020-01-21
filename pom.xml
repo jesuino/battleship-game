@@ -19,6 +19,7 @@
 	</properties>
 	<modules>
 		<module>battleship-api</module>
+		<module>battleship-bot</module>
 	</modules>
 
 	<dependencies>
