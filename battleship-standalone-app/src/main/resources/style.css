@@ -1,0 +1,46 @@
+/*
+Built in classes
+*/
+.root {
+	-fx-background-color: #DDDDFF;
+}
+
+.button:hover {
+	-fx-background-color: linear-gradient(#FF2461, #F9632A);
+	-fx-cursor: HAND
+}
+
+.label {
+	-fx-font-size: 16px;
+	-fx-font-weight: bold;
+	-fx-text-fill: #333333;
+	-fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 0, 0, 0, 1);
+}
+
+.button {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-background-radius: 30;
+	-fx-background-insets: 0, 1, 2, 3, 0;
+	-fx-background-color: linear-gradient(#F9413B, #F8302A);
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+	-fx-background-insets: 0, 1, 2, 3, 0;
+}
+
+/*
+Custom Classes
+*/
+.btn-start {
+	-fx-font-size: 100px
+}
+
+.lbl-bottom {
+	-fx-font-style: italic;
+}
+
+.lbl-title {
+	-fx-font-weight: bold;
+	-fx-text-fill: linear-gradient(to right, #FF5555, #FF0000);
+	-fx-effect: innershadow(gaussian, #FF0000, 10, 0.5, 0, 0);
+	-fx-font-size: 80px
+}

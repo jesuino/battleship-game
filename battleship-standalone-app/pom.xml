@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.fxapps.battleship</groupId>
+		<artifactId>battleship-parent</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
+	<artifactId>battleship-standalone-app</artifactId>
+	<name>Battleship Standalone App</name>
+
+	<properties>
+		<javafx.version>11.0.2</javafx.version>
+	</properties>
+
+	<dependencies>
+		<!-- Battleship APIs -->
+		<dependency>
+			<groupId>org.fxapps.battleship</groupId>
+			<artifactId>battleship-api</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.fxapps.battleship</groupId>
+			<artifactId>battleship-bot</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<!-- JavaFX -->
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>${javafx.version}</version>
+		</dependency>
+	</dependencies>
+
+
+
+</project>

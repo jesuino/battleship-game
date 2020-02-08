@@ -20,6 +20,7 @@
 	<modules>
 		<module>battleship-api</module>
 		<module>battleship-bot</module>
+		<module>battleship-standalone-app</module>
 	</modules>
 
 	<dependencies>
