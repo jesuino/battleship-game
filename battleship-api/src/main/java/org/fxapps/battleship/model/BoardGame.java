@@ -159,25 +159,20 @@ public class BoardGame {
     }
 
     static boolean verifySinkShip(Collection<Guess> guesses, ShipPosition shipPos) {
-        if (shipPos.isVertical()) {
-            for (int y = shipPos.getY(); y < shipPos.getEndY(); y++) {
-                if (!containsPosition(guesses, shipPos.getX(), y)) {
+        for (int i = shipPos.getX(); i <= shipPos.getEndX(); i++) {
+            for (int j = shipPos.getY(); j <= shipPos.getEndY(); j++) {
+                if (! containsPosition(guesses, i, j)) {
                     return false;
                 }
             }
-        } else {
-            for (int x = shipPos.getX(); x < shipPos.getEndX(); x++) {
-                if (!containsPosition(guesses, x, shipPos.getEndY())) {
-                    return false;
-                }
-            }
-
         }
         return true;
     }
 
-    static boolean containsPosition(Collection<Guess> guesses, int x, int y) {
-        return guesses.stream().anyMatch(g -> g.getLocation() == Location.of(x, y));
+    static boolean containsPosition(Collection<Guess> guesses, final int x, final int y) {
+        return guesses.stream()
+                .map(Guess::getLocation)
+                .anyMatch(location -> location == Location.of(x, y));
 
     }
 

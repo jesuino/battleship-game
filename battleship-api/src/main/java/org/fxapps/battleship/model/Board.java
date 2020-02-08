@@ -104,12 +104,12 @@ public class Board {
         var y = shipPosition.getY();
         var isVertical = shipPosition.isVertical();
         if (isVertical) {
-            for (int j = y; j < shipPosition.getEndY(); j++) {
+            for (int j = y; j <= shipPosition.getEndY(); j++) {
                 boardState[x][j] = value;
             }
 
         } else {
-            for (int i = x; i < shipPosition.getEndX(); i++) {
+            for (int i = x; i <= shipPosition.getEndX(); i++) {
                 boardState[i][y] = value;
             }
         }

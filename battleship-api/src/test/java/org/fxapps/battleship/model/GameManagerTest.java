@@ -154,13 +154,18 @@ public class GameManagerTest {
                                                .getBoard(waitingPlayer)
                                                .getShipsPositions().get(0);
         if (shipPosition.isVertical()) {
-            for (int i = shipPosition.getY(); i < shipPosition.getEndY() - 1; i++) {
+            for (int i = shipPosition.getY(); i < shipPosition.getEndY(); i++) {
                 gameManager.guess(player, shipPosition.getX(), i);
                 gameManager.guess(waitingPlayer, shipPosition.getX(), i);
             }
-            gameManager.guess(player, shipPosition.getX(), shipPosition.getEndY() - 1,
+            System.out.println(gameManager.stats().getGuesses().get(player).size());
+            System.out.println(shipPosition);
+            gameManager.guess(player, shipPosition.getX(), shipPosition.getEndY(),
                               (hit, sink) -> {
                                   assertTrue(hit);
+                                  if (!sink) {
+                                      System.out.println();
+                                  }
                                   assertTrue(sink);
                               });
         } else {
