@@ -39,11 +39,11 @@ public class Location {
         return of(x, y);
     }
 
-    public int getX() {
+    public int x() {
         return x;
     }
 
-    public int getY() {
+    public int y() {
         return y;
     }
 
@@ -63,18 +63,14 @@ public class Location {
 
     @Override
     public boolean equals(Object obj) {
-        if (this == obj)
+        if (this == obj) {
             return true;
-        if (obj == null)
+        }
+        if (obj == null || getClass() != obj.getClass()) {
             return false;
-        if (getClass() != obj.getClass())
-            return false;
+        }
         Location other = (Location) obj;
-        if (x != other.x)
-            return false;
-        if (y != other.y)
-            return false;
-        return true;
+        return x == other.x && y == other.y;
     }
 
 }

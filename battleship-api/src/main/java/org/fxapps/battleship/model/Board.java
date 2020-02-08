@@ -20,6 +20,8 @@ public class Board {
     private int rows;
     private int cols;
 
+    private Board() {}
+
     public static Board create() {
         return create(DEFAULT_ROWS, DEFAULT_COLS);
     }
@@ -32,7 +34,18 @@ public class Board {
         return board;
     }
 
-    void placeShip(ShipPosition shipPosition) {
+    public boolean canAddShip(ShipPosition shipPosition) {
+        try {
+            checkPositions(shipPosition.getX(), shipPosition.getY());
+            validateShip(shipPosition);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    public void placeShip(ShipPosition shipPosition) {
         checkPositions(shipPosition.getX(), shipPosition.getY());
         validateShip(shipPosition);
         shipsPositions.add(shipPosition);
@@ -46,22 +59,22 @@ public class Board {
      * @return
      * true if some ship was removed, false otherwise
      */
-    boolean removeShip(Ship ship) {
+    public boolean removeShip(Ship ship) {
         final var shipsToRemove = shipsPositions.stream()
                                                 .filter(sp -> sp.getShip() == ship)
                                                 .collect(Collectors.toList());
         shipsPositions.removeAll(shipsToRemove);
-        shipsToRemove.forEach(sp -> setShipPositionState(sp, false));
+        shipsToRemove.forEach(this::cancelShip);
         return !shipsToRemove.isEmpty();
     }
 
-    boolean stateAt(int x, int y) {
+    public boolean stateAt(int x, int y) {
         checkPositions(x, y);
         return boardState[x][y];
     }
 
     void checkPositions(int x, int y) {
-        if (x >= DEFAULT_COLS || y >= DEFAULT_ROWS) {
+        if (isValidPosition(x, y)) {
             throw new IllegalArgumentException(MSG_OUT_OF_RANGE);
         }
     }
@@ -74,8 +87,16 @@ public class Board {
         return cols;
     }
 
+    public boolean isValidPosition(int x, int y) {
+        return x >= getCols() || y >= getRows();
+    }
+
     public List<ShipPosition> getShipsPositions() {
         return Collections.unmodifiableList(shipsPositions);
+    }
+
+    private void cancelShip(ShipPosition shipPosition) {
+        setShipPositionState(shipPosition, false);
     }
 
     private void setShipPositionState(ShipPosition shipPosition, Boolean value) {
@@ -106,7 +127,7 @@ public class Board {
     }
 
     private void validateVerticalShip(int x, int y, int endY) {
-        if (endY >= DEFAULT_ROWS) {
+        if (endY >= getRows()) {
             throw new IllegalArgumentException(MSG_SHIP_OUT_OF_RANGE);
         }
 
@@ -118,7 +139,7 @@ public class Board {
     }
 
     private void validateHorizontalShip(int x, int y, int endX) {
-        if (endX >= DEFAULT_COLS) {
+        if (endX >= getCols()) {
             throw new IllegalArgumentException(MSG_SHIP_OUT_OF_RANGE);
         }
 

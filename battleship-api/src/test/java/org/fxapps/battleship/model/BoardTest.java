@@ -32,6 +32,14 @@ public class BoardTest {
                                      () -> board.placeShip(ShipPosition.vertical(Ship.BATTLESHIP, Board.DEFAULT_ROWS, 0)));
         assertEquals(Board.MSG_OUT_OF_RANGE, exception.getMessage());
     }
+    
+    @Test
+    public void shipOnEdgeTest() {
+        ShipPosition sp = ShipPosition.horizontal(Ship.DESTROYER, board.getCols() - Ship.DESTROYER.getSpaces(), 0);
+        boolean addShip = board.canAddShip(sp);
+        
+        assertTrue(addShip);
+    }
 
     @Test
     public void conflictingVerticalShipTest() {
@@ -70,8 +78,9 @@ public class BoardTest {
     @Test
     public void successVerticalShipPositionTest() {
         var board = Board.create();
-        board.placeShip(ShipPosition.vertical(CARRIER, 0, 0));
-        for (int i = 0; i < CARRIER.getSpaces(); i++) {
+        ShipPosition sp = ShipPosition.vertical(CARRIER, 0, 0);
+        board.placeShip(sp);
+        for (int i = 0; i < sp.getEndY(); i++) {
             assertTrue(board.stateAt(0, i));
         }
         assertEquals(1, board.getShipsPositions().size());
@@ -79,8 +88,9 @@ public class BoardTest {
 
     @Test
     public void successHorizontalShipPositionTest() {
-        board.placeShip(ShipPosition.horizontal(CARRIER, 0, 0));
-        for (int i = 0; i < CARRIER.getSpaces(); i++) {
+        ShipPosition sp = ShipPosition.horizontal(CARRIER, 0, 0);
+        board.placeShip(sp);
+        for (int i = 0; i < sp.getEndX(); i++) {
             assertTrue(board.stateAt(i, 0));
         }
         assertEquals(1, board.getShipsPositions().size());
@@ -93,14 +103,14 @@ public class BoardTest {
         board.placeShip(pos);
         board.placeShip(pos2);
         board.placeShip(ShipPosition.create(CARRIER, 0, 2, false));
-        for (int i = 0; i < pos.getShip().getSpaces(); i++) {
+        for (int i = 0; i < pos.getEndX(); i++) {
             assertTrue(board.stateAt(i, 0));
             assertTrue(board.stateAt(i, 1));
         }
         assertEquals(3, board.getShipsPositions().size());
         boolean shipRemoval = board.removeShip(Ship.BATTLESHIP);
         assertTrue(shipRemoval);
-        for (int i = 0; i < pos.getShip().getSpaces(); i++) {
+        for (int i = 0; i < pos.getEndX(); i++) {
             assertFalse(board.stateAt(i, 0));
             assertFalse(board.stateAt(i, 1));
         }

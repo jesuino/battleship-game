@@ -17,6 +17,10 @@ public class ShipPosition {
         return create(ship, x, y, true);
     }
 
+    public static ShipPosition create(Ship ship, Location location, boolean isVertical) {
+        return create(ship, location.x(), location.y(), isVertical);
+    }
+
     public static ShipPosition create(Ship ship, int x, int y, boolean isVertical) {
         ShipPosition shipPosition = new ShipPosition();
         shipPosition.ship = ship;
@@ -25,10 +29,10 @@ public class ShipPosition {
         shipPosition.isVertical = isVertical;
         if (isVertical) {
             shipPosition.endX = x;
-            shipPosition.endY = y + ship.getSpaces();
+            shipPosition.endY = y + ship.getSpaces() - 1;
         } else {
             shipPosition.endY = y;
-            shipPosition.endX = x + ship.getSpaces();
+            shipPosition.endX = x + ship.getSpaces() - 1;
         }
         return shipPosition;
     }
@@ -49,14 +53,18 @@ public class ShipPosition {
         return isVertical;
     }
 
-    
     public int getEndX() {
         return endX;
     }
 
-    
     public int getEndY() {
         return endY;
+    }
+
+    @Override
+    public String toString() {
+        return "ShipPosition [ship=" + ship + ", x=" + x + ", y=" + y +
+               ", endX=" + endX + ", endY=" + endY + ", isVertical=" + isVertical + "]";
     }
 
 }
