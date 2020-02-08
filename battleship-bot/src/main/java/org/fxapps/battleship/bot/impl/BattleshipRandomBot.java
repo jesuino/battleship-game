@@ -32,11 +32,11 @@ public class BattleshipRandomBot extends Player implements BattleshipBot {
         }
 
         for (int i = 0; i < cols && history.contains(location); i++) {
-            var x = location.getX();
+            var x = location.x();
             x = x < cols - 1 ? x + 1 : 0;
             location = location.withX(x);
             for (int j = 0; j < rows && history.contains(location); j++) {
-                var y = location.getY();
+                var y = location.y();
                 y = y < rows - 1 ? y + 1 : 0;
                 location = location.withY(y);
             }
