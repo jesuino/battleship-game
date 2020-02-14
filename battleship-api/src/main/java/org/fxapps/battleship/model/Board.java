@@ -3,6 +3,7 @@ package org.fxapps.battleship.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Board {
@@ -34,15 +35,15 @@ public class Board {
         return board;
     }
 
-    public boolean canAddShip(ShipPosition shipPosition) {
-        try {
-            checkPositions(shipPosition.getX(), shipPosition.getY());
-            validateShip(shipPosition);
+    public Optional<ShipPosition> placeShip(Ship ship, Location location, boolean isVertical) {
+        ShipPosition shipPosition = ShipPosition.create(ship, location, isVertical);
+        try { 
+            placeShip(shipPosition);
+            return Optional.of(shipPosition);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
+            // TODO: process e
         }
-        return true;
+        return Optional.empty();
     }
 
     public void placeShip(ShipPosition shipPosition) {
@@ -131,7 +132,7 @@ public class Board {
             throw new IllegalArgumentException(MSG_SHIP_OUT_OF_RANGE);
         }
 
-        for (int j = y; j < endY; j++) {
+        for (int j = y; j <= endY; j++) {
             if (boardState[x][j]) {
                 throw new IllegalArgumentException(MSG_SHIP_CONFLICT);
             }
@@ -143,7 +144,7 @@ public class Board {
             throw new IllegalArgumentException(MSG_SHIP_OUT_OF_RANGE);
         }
 
-        for (int i = x; i < endX; i++) {
+        for (int i = x; i <= endX; i++) {
             if (boardState[i][y]) {
                 throw new IllegalArgumentException(MSG_SHIP_CONFLICT);
             }

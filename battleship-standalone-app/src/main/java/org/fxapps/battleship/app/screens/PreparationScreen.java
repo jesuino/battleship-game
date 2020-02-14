@@ -2,14 +2,15 @@ package org.fxapps.battleship.app.screens;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -18,7 +19,6 @@ import javafx.scene.paint.Color;
 import org.fxapps.battleship.model.Board;
 import org.fxapps.battleship.model.Location;
 import org.fxapps.battleship.model.Ship;
-import org.fxapps.battleship.model.ShipPosition;
 
 public class PreparationScreen implements Screen {
 
@@ -27,8 +27,8 @@ public class PreparationScreen implements Screen {
     private static final int boardWidth = 500;
     private static final int boardHeight = 500;
     private GraphicsContext ctx;
-    private ComboBox<Ship> cmbShips;
-    private CheckBox cbIsVertical;
+    private ComboBox<Ship> cbShips;
+    private ToggleButton tbIsVertical;
 
     public PreparationScreen(EventHandler<ActionEvent> evt) {
         init(evt);
@@ -36,15 +36,18 @@ public class PreparationScreen implements Screen {
 
     public void init(EventHandler<ActionEvent> evt) {
         var lblTitle = new Label("Prepare your Board");
-        cmbShips = new ComboBox<>();
-        cbIsVertical = new CheckBox("Vertical");
         var centerPane = new VBox(30);
+        var btnReset = new Button("RESET");
+
+        cbShips = new ComboBox<>();
+        
+        tbIsVertical = new ToggleButton("Vertical");
         root = new BorderPane();
 
-        cmbShips.getItems().addAll(Ship.values());
-        cmbShips.getSelectionModel().select(0);
+        initCmbShips();
 
-        centerPane.getChildren().addAll(new HBox(10, new Label("Ship"), cmbShips, cbIsVertical),
+        HBox hbShipConf = new HBox(10, new Label("Ship"), cbShips, tbIsVertical, btnReset);
+        centerPane.getChildren().addAll(hbShipConf,
                                         buildBoardRepresentation());
 
         Button btn = new Button("ABORT");
@@ -57,6 +60,22 @@ public class PreparationScreen implements Screen {
         BorderPane.setAlignment(lblTitle, Pos.CENTER);
         BorderPane.setAlignment(centerPane, Pos.CENTER);
         BorderPane.setAlignment(btn, Pos.CENTER);
+
+        BorderPane.setMargin(centerPane, new Insets(30));
+
+        cbShips.itemsProperty().addListener((obs, old, n) -> cbShips.setDisable(n.isEmpty()));
+
+        btnReset.setOnAction(e -> {
+            board = Board.create();
+            cbShips.getItems().clear();
+            initCmbShips();
+            paintBoard();
+        });
+    }
+
+    private void initCmbShips() {
+        cbShips.getItems().addAll(Ship.values());
+        cbShips.getSelectionModel().select(0);
     }
 
     private Canvas buildBoardRepresentation() {
@@ -64,26 +83,26 @@ public class PreparationScreen implements Screen {
         ctx = canvas.getGraphicsContext2D();
         paintBoard();
         canvas.setOnMouseClicked(e -> {
-            Ship ship = cmbShips.getSelectionModel().getSelectedItem();
-            if (ship != null) {
-                Location location = getLocation(e);
-                System.out.println(location);
-                addShip(location, ship);
-            }
-            cleanShipAndSelectNext(ship);
-        });
-        canvas.setOnMouseMoved(e -> {
-            Ship ship = cmbShips.getSelectionModel().getSelectedItem();
+            Ship ship = cbShips.getSelectionModel().getSelectedItem();
             if (ship != null) {
                 board.removeShip(ship);
                 Location location = getLocation(e);
                 System.out.println(location);
-                addShip(location, ship);
+                board.placeShip(ship, location, tbIsVertical.isSelected())
+                     .ifPresent(pos -> cleanShipAndSelectNext(ship));
+            }
+        });
+        canvas.setOnMouseMoved(e -> {
+            Ship ship = cbShips.getSelectionModel().getSelectedItem();
+            if (ship != null) {
+                board.removeShip(ship);
+                Location location = getLocation(e);
+                board.placeShip(ship, location, tbIsVertical.isSelected());
             }
             paintBoard();
         });
         canvas.setOnMouseExited(e -> {
-            Ship ship = cmbShips.getSelectionModel().getSelectedItem();
+            Ship ship = cbShips.getSelectionModel().getSelectedItem();
             board.removeShip(ship);
             paintBoard();
         });
@@ -91,11 +110,9 @@ public class PreparationScreen implements Screen {
     }
 
     private void cleanShipAndSelectNext(Ship ship) {
-        cmbShips.getItems().remove(ship);
-        if (cmbShips.getItems().isEmpty()) {
-            cmbShips.setDisable(true);
-        } else {
-            cmbShips.getSelectionModel().select(0);
+        cbShips.getItems().remove(ship);
+        if (!cbShips.getItems().isEmpty()) {
+            cbShips.getSelectionModel().select(0);
         }
     }
 
@@ -105,15 +122,6 @@ public class PreparationScreen implements Screen {
         int posX = (int) (x / (boardWidth / board.getCols()));
         int posY = (int) (y / (boardHeight / board.getRows()));
         return Location.of(posX, posY);
-    }
-
-    private void addShip(Location location, Ship ship) {
-        ShipPosition shipPosition = ShipPosition.create(ship, location, cbIsVertical.isSelected());
-        System.out.println(shipPosition);
-        if (board.canAddShip(shipPosition)) {
-            board.placeShip(shipPosition);
-            paintBoard();
-        }
     }
 
     private void paintBoard() {

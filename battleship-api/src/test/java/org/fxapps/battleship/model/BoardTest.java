@@ -35,10 +35,9 @@ public class BoardTest {
     
     @Test
     public void shipOnEdgeTest() {
-        ShipPosition sp = ShipPosition.horizontal(Ship.DESTROYER, board.getCols() - Ship.DESTROYER.getSpaces(), 0);
-        boolean addShip = board.canAddShip(sp);
+        var addShip = board.placeShip(Ship.DESTROYER, Location.of(board.getCols() - Ship.DESTROYER.getSpaces(), 0), false);
         
-        assertTrue(addShip);
+        assertTrue(addShip.isPresent());
     }
 
     @Test
