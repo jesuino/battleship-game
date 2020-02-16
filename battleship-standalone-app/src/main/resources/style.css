@@ -2,27 +2,63 @@
 Built in classes
 */
 .root {
-	-fx-background-color: #DDDDFF;
-}
-
-.button:hover {
-	-fx-background-color: linear-gradient(#FF2461, #F9632A);
-	-fx-cursor: HAND
+	-fx-background-color: #add8e6;
 }
 
 .label {
 	-fx-font-size: 16px;
 	-fx-font-weight: bold;
-	-fx-text-fill: #333333;
+	-fx-text-fill: #3333AA;
 	-fx-effect: dropshadow(gaussian, rgba(255, 255, 255, 0.5), 0, 0, 0, 1);
 }
 
-.button {
+.button, .toggle-button, .combo-box {
 	-fx-text-fill: white;
 	-fx-font-weight: bold;
 	-fx-background-radius: 30;
 	-fx-background-insets: 0, 1, 2, 3, 0;
-	-fx-background-color: linear-gradient(#F9413B, #F8302A);
+	-fx-background-color: steelblue; -fx-effect : dropshadow( three-pass-box,
+	rgba( 0, 0, 0, 0.6), 5, 0.0, 0, 1);
+	-fx-background-insets: 0, 1, 2, 3, 0;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.list-cell {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-background-color: steelblue;
+}
+
+.button:hover, .toggle-button:hover {
+	-fx-background-color: dodgerblue;
+	-fx-cursor: HAND
+}
+
+.list-cell:hover {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-background-color: dodgerblue;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.toggle-button {
+	-fx-cursor: HAND;
+}
+
+.danger {
+	-fx-background-color: maroon;
+}
+
+.danger:hover {
+	-fx-background-color: firebrick;
+}
+
+.toggle-button:selected, .button:pressed {
+	-fx-text-fill: white;
+	-fx-font-weight: bold;
+	-fx-background-radius: 30;
+	-fx-background-insets: 0, 1, 2, 3, 0;
+	-fx-background-color: #1e90ff;
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 	-fx-background-insets: 0, 1, 2, 3, 0;
 }
@@ -34,13 +70,30 @@ Custom Classes
 	-fx-font-size: 100px
 }
 
+.btn-start-game {
+	-fx-font-size: 40px
+}
+
 .lbl-bottom {
 	-fx-font-style: italic;
 }
 
-.lbl-title {
+.lbl-app-title {
 	-fx-font-weight: bold;
-	-fx-text-fill: linear-gradient(to right, #FF5555, #FF0000);
-	-fx-effect: innershadow(gaussian, #FF0000, 10, 0.5, 0, 0);
+	-fx-text-fill: lightsteelblue;
+	-fx-effect: innershadow(gaussian, steelblue, 10, 0.5, 0, 0);
 	-fx-font-size: 80px
+}
+
+.btn-close {
+	-fx-opacity: 0.2;
+}
+
+.btn-close:hover {
+	-fx-opacity: 1.0;
+}
+.lbl-screen-title {
+	-fx-font-weight: bold;
+	-fx-text-fill: steelblue;
+	-fx-font-size: 30px;
 }

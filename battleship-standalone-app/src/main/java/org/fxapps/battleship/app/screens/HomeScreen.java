@@ -25,7 +25,7 @@ public class HomeScreen implements Screen {
         var btnStart = new Button("Start");
 
         borderPane = new BorderPane();
-        lblTop.getStyleClass().add("lbl-title");
+        lblTop.getStyleClass().add("lbl-app-title");
         btnStart.getStyleClass().add("btn-start");
 
         btnStart.setOnAction(startAction);
@@ -45,6 +45,17 @@ public class HomeScreen implements Screen {
     @Override
     public Node content() {
         return borderPane;
+    }
+
+    @Override
+    public String name() {
+        return "Home";
+    }
+
+    @Override
+    public void onShow() {
+        // TODO Auto-generated method stub
+        
     }
 
 }

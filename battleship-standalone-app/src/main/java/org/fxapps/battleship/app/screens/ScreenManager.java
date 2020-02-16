@@ -1,27 +1,57 @@
 package org.fxapps.battleship.app.screens;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.animation.FadeTransition;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 public class ScreenManager {
 
     private final Duration millis = Duration.millis(300);
-    private final StackPane root = new StackPane();
+    private StackPane root;
 
     private FadeTransition ft;
     private List<Screen> screens;
+    private Screen homeScren;
     private Screen currentScreen;
+    private Map<String, Label> labels = new HashMap<>();
+    private double width;
+    private double height;
 
-    public ScreenManager(Screen... screens) {
+    public ScreenManager(double width, double height, Screen... screens) {
+        this.width = width;
+        this.height = height;
+        homeScren = screens[0];
         this.screens = List.of(screens);
         init();
     }
 
     public void init() {
+        var btnClose = new Button("X");
+        var screenContainer = new BorderPane();
+        root = new StackPane();
+        
+        btnClose.setOnAction(e -> goTo(homeScren.id()));
+        
+        btnClose.getStyleClass().add("btn-close");
+
+        StackPane.setAlignment(btnClose, Pos.TOP_RIGHT);
+        StackPane.setMargin(btnClose, new Insets(20, 25, 0, 0));
+        
+        
+        root.setPrefHeight(height);
+        root.setPrefWidth(width);
+
+
         ft = new FadeTransition(millis);
         ft.setNode(root);
         ft.setCycleCount(2);
@@ -31,10 +61,28 @@ public class ScreenManager {
 
         ft.currentTimeProperty().addListener((obs, old, n) -> {
             if (ft.getNode().getOpacity() < 0.01) {
-                var content = getCurrentScreen().content();
+                Screen screen = getCurrentScreen();
+                screen.onShow();
+                var content = screen.content();
+                screenContainer.getChildren().clear();
                 root.getChildren().clear();
-                root.getChildren().add(content);
+                screenContainer.setCenter(content);
+                root.getChildren().add(screenContainer);
+                if (content != homeScren.content()) {
+                    screenContainer.setTop(title(screen.name()));
+                    root.getChildren().add(btnClose);
+                }
             }
+        });
+    }
+
+    private Label title(String name) {
+        return labels.computeIfAbsent(name, n -> {
+            var newLblTitle = new Label(name);
+            newLblTitle.getStyleClass().add("lbl-screen-title");
+            BorderPane.setAlignment(newLblTitle, Pos.CENTER);
+            BorderPane.setMargin(newLblTitle, new Insets(25, 0, 0, 0));
+            return newLblTitle;
         });
     }
 

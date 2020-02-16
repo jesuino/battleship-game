@@ -8,5 +8,8 @@ public interface Screen {
 
     public Node content();
     
+    public String name();
+    
+    public void onShow();
     
 }
