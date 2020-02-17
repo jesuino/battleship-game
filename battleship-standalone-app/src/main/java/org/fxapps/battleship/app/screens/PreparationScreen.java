@@ -13,7 +13,6 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import org.fxapps.battleship.model.Board;
 import org.fxapps.battleship.model.Location;
 import org.fxapps.battleship.model.Ship;
@@ -33,43 +32,53 @@ public class PreparationScreen implements Screen {
     }
 
     public void init(EventHandler<ActionEvent> evt) {
-        var centerPane = new VBox(10);
+        var btnRandom = new Button("RANDOM");
         var btnReset = new Button("RESET");
         var btnStart = new Button("START");
 
-        btnReset.getStyleClass().add("danger");
-
+        canvas = new Canvas(boardWidth, boardHeight);
         cbShips = new ComboBox<>();
-        btnStart.disableProperty().bind(cbShips.disableProperty().not());
-
-        tbIsVertical = new ToggleButton("Vertical");
-        root = new BorderPane();
 
         initCmbShips();
 
+        btnReset.getStyleClass().add("danger");
+        btnStart.getStyleClass().add("btn-start-game");
+
+        btnStart.disableProperty().bind(cbShips.disableProperty().not());
+
+        tbIsVertical = new ToggleButton("Vertical");
+
+        root = new BorderPane();
+
         btnReset.setAlignment(Pos.CENTER_LEFT);
+
+        btnStart.setPrefSize(canvas.getWidth(), 100);
 
         var hbShipConf = new HBox(20,
                                   cbShips,
                                   tbIsVertical,
+                                  btnRandom,
                                   btnReset);
 
-        centerPane.getChildren().addAll(hbShipConf,
-                                        buildBoardRepresentation(),
-                                        btnStart);
+        root.setTop(hbShipConf);
+        root.setCenter(buildBoardRepresentation());
+        root.setBottom(btnStart);
 
-        centerPane.setAlignment(Pos.CENTER);
-        btnStart.getStyleClass().add("btn-start-game");
-        btnStart.setPrefSize(canvas.getWidth(), 100);
+        BorderPane.setAlignment(hbShipConf, Pos.CENTER);
+        BorderPane.setAlignment(btnStart, Pos.CENTER);
 
-        root.setCenter(centerPane);
-
-        BorderPane.setAlignment(centerPane, Pos.CENTER);
-        BorderPane.setMargin(centerPane, new Insets(50));
+        BorderPane.setMargin(btnStart, new Insets(10));
+        BorderPane.setMargin(hbShipConf, new Insets(20, 0, 0, 20));
 
         cbShips.getItems().addListener((Observable obs) -> cbShips.setDisable(cbShips.getItems().isEmpty()));
+        tbIsVertical.disableProperty().bind((cbShips.disableProperty()));
 
         btnReset.setOnAction(e -> reset());
+        btnRandom.setOnAction(e -> {
+            board.addRandomShipPositions();
+            cbShips.getItems().clear();
+            paintBoard();
+        });
     }
 
     private void reset() {
@@ -85,7 +94,6 @@ public class PreparationScreen implements Screen {
     }
 
     private Canvas buildBoardRepresentation() {
-        canvas = new Canvas(boardWidth, boardHeight);
         paintBoard();
         canvas.setOnMouseClicked(e -> {
             Ship ship = cbShips.getSelectionModel().getSelectedItem();

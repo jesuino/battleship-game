@@ -25,6 +25,12 @@ public class BoardTest {
         assertEquals(Board.DEFAULT_ROWS, board.getRows());
     }
     
+    @Test
+    public void randomShipsInitConditionsTest() {
+        var randomShips = Board.randomShips();
+        assertEquals(Ship.values().length, randomShips.getShipsPositions().size());
+    }
+    
 
     @Test
     public void outOfRangeShipPositionTest() {

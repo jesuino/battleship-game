@@ -4,9 +4,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toList;
 
 public class Board {
+
+    Random random = new Random();
 
     public static final int DEFAULT_ROWS = 10;
     public static final int DEFAULT_COLS = 10;
@@ -35,9 +41,21 @@ public class Board {
         return board;
     }
 
+    public static Board randomShips() {
+        var board = create(DEFAULT_ROWS, DEFAULT_COLS);
+        board.addRandomShipPositions();
+        return board;
+    }
+
+    public static Board randomShips(int rows, int cols) {
+        var board = create(rows, cols);
+        board.addRandomShipPositions();
+        return board;
+    }
+
     public Optional<ShipPosition> placeShip(Ship ship, Location location, boolean isVertical) {
         ShipPosition shipPosition = ShipPosition.create(ship, location, isVertical);
-        try { 
+        try {
             placeShip(shipPosition);
             return Optional.of(shipPosition);
         } catch (Exception e) {
@@ -148,6 +166,24 @@ public class Board {
             if (boardState[i][y]) {
                 throw new IllegalArgumentException(MSG_SHIP_CONFLICT);
             }
+        }
+    }
+
+    public void addRandomShipPositions() {
+        var addedShips = this.getShipsPositions().stream().map(ShipPosition::getShip).collect(toList());
+        var shipsToAdd = Stream.of(Ship.values()).filter(s -> !addedShips.contains(s)).collect(toList());
+        while (!shipsToAdd.isEmpty()) {
+            var ship = shipsToAdd.get(0);
+            var isVertical = random.nextBoolean();
+            int x, y;
+            if (isVertical) {
+                x = random.nextInt(getCols());
+                y = random.nextInt(getRows() - ship.getSpaces());
+            } else {
+                x = random.nextInt(getCols() - ship.getSpaces());
+                y = random.nextInt(getRows());
+            }
+            placeShip(ship, Location.of(x, y), isVertical).ifPresent(sp -> shipsToAdd.remove(sp.getShip()));
         }
     }
 

@@ -45,7 +45,7 @@ public class ScreenManager {
         btnClose.getStyleClass().add("btn-close");
 
         StackPane.setAlignment(btnClose, Pos.TOP_RIGHT);
-        StackPane.setMargin(btnClose, new Insets(20, 25, 0, 0));
+        StackPane.setMargin(btnClose, new Insets(5, 5, 0, 0));
         
         
         root.setPrefHeight(height);
