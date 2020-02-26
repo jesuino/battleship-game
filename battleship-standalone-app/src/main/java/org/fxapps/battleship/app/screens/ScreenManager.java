@@ -26,7 +26,7 @@ public class ScreenManager {
     private Map<String, Label> labels = new HashMap<>();
     private double width;
     private double height;
-
+    
     public ScreenManager(double width, double height, Screen... screens) {
         this.width = width;
         this.height = height;
@@ -46,11 +46,9 @@ public class ScreenManager {
 
         StackPane.setAlignment(btnClose, Pos.TOP_RIGHT);
         StackPane.setMargin(btnClose, new Insets(5, 5, 0, 0));
-        
-        
+                
         root.setPrefHeight(height);
         root.setPrefWidth(width);
-
 
         ft = new FadeTransition(millis);
         ft.setNode(root);

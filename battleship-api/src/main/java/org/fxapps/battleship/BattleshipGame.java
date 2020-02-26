@@ -1,5 +1,6 @@
 package org.fxapps.battleship;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
@@ -8,6 +9,7 @@ import org.fxapps.battleship.model.GameManager;
 import org.fxapps.battleship.model.GameStats;
 import org.fxapps.battleship.model.Player;
 import org.fxapps.battleship.model.Ship;
+import org.fxapps.battleship.model.ShipPosition;
 
 public interface BattleshipGame {
 
@@ -37,6 +39,14 @@ public interface BattleshipGame {
      * @param y
      */
     void addHorizontalShip(Player player, Ship ship, int x, int y);
+
+    /**
+     * 
+     * Add for the player
+     * @param player
+     * @param shipsPositions
+     */
+    void addShips(Player player, List<ShipPosition> shipsPositions);
 
     /**
      * Remove positions with the given ship for the given player and throws exception if the game is not in the correct state. <br>

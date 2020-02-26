@@ -220,4 +220,10 @@ public class GameManager implements BattleshipGame {
                   });
     }
 
+    @Override
+    public void addShips(Player player, List<ShipPosition> shipsPositions) {
+        shipsPositions.forEach(sp -> boardGame.addShip(player, sp));
+        verifyIfPreparationIsDone();
+    }
+
 }

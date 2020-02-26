@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.fxapps.battleship.app.screens.GameScreen;
 import org.fxapps.battleship.app.screens.HomeScreen;
 import org.fxapps.battleship.app.screens.PreparationScreen;
 import org.fxapps.battleship.app.screens.Screen;
@@ -17,6 +18,7 @@ public class AppEntryPoint extends Application {
     private ScreenManager screenManager;
     Screen preparationScreen;
     Screen homeScreen;
+    GameScreen gameScreen;
 
     public static void main(String[] args) {
         launch();
@@ -24,9 +26,13 @@ public class AppEntryPoint extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        preparationScreen = new PreparationScreen(e -> screenManager.goTo(homeScreen.id()));
+        gameScreen = new GameScreen();
+        preparationScreen = new PreparationScreen(shipPositions -> {
+            gameScreen.setShipsPositions(shipPositions);
+            screenManager.goTo(gameScreen.id());
+        });
         homeScreen = new HomeScreen(e -> screenManager.goTo(preparationScreen.id()));
-        screenManager = new ScreenManager(WIDTH, HEIGHT, homeScreen, preparationScreen);
+        screenManager = new ScreenManager(WIDTH, HEIGHT, homeScreen, preparationScreen, gameScreen);
         screenManager.goTo(homeScreen.id());
         var scene = new Scene(new StackPane(screenManager.root()), WIDTH, HEIGHT);
         scene.getStylesheets().add("style.css");
