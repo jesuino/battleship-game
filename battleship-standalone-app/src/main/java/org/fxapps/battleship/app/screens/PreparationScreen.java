@@ -90,7 +90,7 @@ public class PreparationScreen implements Screen {
             Ship ship = cbShips.getSelectionModel().getSelectedItem();
             if (ship != null) {
                 board.removeShip(ship);
-                Location location = BattleshipPainter.getLocation(e);
+                Location location = BattleshipPainter.getLocationOnBoard(e);
                 board.placeShip(ship, location, tbIsVertical.isSelected())
                      .ifPresent(pos -> cleanShipAndSelectNext(ship));
             }
@@ -99,7 +99,7 @@ public class PreparationScreen implements Screen {
             Ship ship = cbShips.getSelectionModel().getSelectedItem();
             if (ship != null) {
                 board.removeShip(ship);
-                Location location = BattleshipPainter.getLocation(e);
+                Location location = BattleshipPainter.getLocationOnBoard(e);
                 board.placeShip(ship, location, tbIsVertical.isSelected());
             }
             paintBoard();

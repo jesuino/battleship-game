@@ -1,6 +1,5 @@
 package org.fxapps.battleship.bot.impl;
 
-import org.fxapps.battleship.model.Board;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,30 +9,29 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class BattleshipRandomBotTest {
 
     private BattleshipRandomBot bot;
-    private Board board;
 
     @BeforeEach
     public void init() {
         bot = new BattleshipRandomBot();
-        board = Board.create(20, 20);
     }
 
     @Test
     void newGuessTest() {
-        bot.newLocation(board);
+        bot.newLocation();
         assertEquals(1, bot.history.size());
     }
 
     @Test
     void noMoreGuessTest() {
-        final int totalGuess = board.getCols() * board.getRows();
+        int cols = 20, rows = 20;
+        final int totalGuess = cols * rows;
         int guessCount = totalGuess;
         while (guessCount != 0) {
-            bot.newLocation(board);
+            bot.newLocation(rows, cols);
             guessCount--;
         }
         assertEquals(totalGuess, bot.history.size());
-        Exception e = assertThrows(IllegalStateException.class, () -> bot.newLocation(board));
+        Exception e = assertThrows(IllegalStateException.class, () -> bot.newLocation(rows, cols));
         assertEquals(BattleshipRandomBot.MSG_NO_MORE_GUESS, e.getMessage());
     }
 

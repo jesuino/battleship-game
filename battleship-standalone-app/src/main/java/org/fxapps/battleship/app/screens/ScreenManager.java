@@ -47,8 +47,9 @@ public class ScreenManager {
         StackPane.setAlignment(btnClose, Pos.TOP_RIGHT);
         StackPane.setMargin(btnClose, new Insets(5, 5, 0, 0));
                 
-        root.setPrefHeight(height);
-        root.setPrefWidth(width);
+        root.setPrefSize(width, height);
+        root.setMaxSize(width, height);
+        root.setMinSize(width, height);
 
         ft = new FadeTransition(millis);
         ft.setNode(root);

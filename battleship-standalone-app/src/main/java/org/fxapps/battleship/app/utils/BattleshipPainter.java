@@ -48,15 +48,36 @@ public class BattleshipPainter {
         var ctx = canvas.getGraphicsContext2D();
         paintEmptyBoard(ctx, boardCols, boardRows, tileWidth, tileHeight);
         paintShips(ctx, shipsPositions, tileWidth, tileHeight);
+        paintsGuesses(ctx, guesses, tileWidth, tileHeight);
     }
 
-    public static Location getLocation(MouseEvent e) {
+    public static Location getLocationOnBoard(MouseEvent e) {
         var target = (Canvas) e.getSource();
+        return getLocationOnBoard(e, target.getWidth(), target.getHeight());
+    }
+
+    public static Location getLocationOnBoard(MouseEvent e, double width, double height) {
         var x = e.getX();
         var y = e.getY();
-        int posX = (int) (x / (target.getWidth() / Board.DEFAULT_COLS));
-        int posY = (int) (y / (target.getHeight() / Board.DEFAULT_ROWS));
+        int posX = (int) (x / (width / Board.DEFAULT_COLS));
+        int posY = (int) (y / (height / Board.DEFAULT_ROWS));
         return Location.of(posX, posY);
+    }
+
+    private static void paintsGuesses(GraphicsContext ctx, List<Guess> guesses, double tileWidth, double tileHeight) {
+        var fireImage = imageCache.computeIfAbsent("/images/fire.png", Image::new);
+        var splashImage = imageCache.computeIfAbsent("/images/splash.png", Image::new);
+        for (Guess guess : guesses) {
+            var image = splashImage;
+            if (guess.isHit()) {
+                image = fireImage;
+            }
+            ctx.drawImage(image,
+                          guess.getLocation().x() * tileWidth,
+                          guess.getLocation().y() * tileHeight,
+                          tileWidth,
+                          tileHeight);
+        }
     }
 
     private static void paintEmptyBoard(GraphicsContext ctx, int boardCols, int boardRows, final double tileWidth, final double tileHeight) {

@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.Set;
 
 import org.fxapps.battleship.bot.BattleshipBot;
-import org.fxapps.battleship.model.Board;
 import org.fxapps.battleship.model.Location;
 import org.fxapps.battleship.model.Player;
 
@@ -20,9 +19,7 @@ public class BattleshipRandomBot extends Player implements BattleshipBot {
     }
 
     @Override
-    public Location newLocation(Board botBoard) {
-        final var rows = botBoard.getRows();
-        final var cols = botBoard.getCols();
+    public Location newLocation(int rows, int cols) {
         final var maxGuess = rows * cols;
         var location = Location.of(random.nextInt(cols),
                                    random.nextInt(rows));
