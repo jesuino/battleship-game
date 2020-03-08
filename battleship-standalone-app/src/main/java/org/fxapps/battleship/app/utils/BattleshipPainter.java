@@ -21,6 +21,8 @@ import org.fxapps.battleship.model.ShipPosition;
 
 public class BattleshipPainter {
 
+    private static final Color SEA_COLOR = Color.MIDNIGHTBLUE;
+    
     static Map<String, Image> imageCache = new HashMap<>();
     final static Random random = new Random();
 
@@ -88,7 +90,7 @@ public class BattleshipPainter {
             for (int j = 0; j < boardRows; j++) {
                 var x = i * tileWidth;
                 var y = j * tileHeight;
-                ctx.setFill(Color.ROYALBLUE);
+                ctx.setFill(SEA_COLOR);
                 ctx.fillRect(x, y, tileWidth, tileHeight);
                 ctx.strokeRect(x, y, tileWidth, tileHeight);
                 if (i == 0) {

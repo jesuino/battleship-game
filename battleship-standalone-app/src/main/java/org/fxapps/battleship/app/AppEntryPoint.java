@@ -26,14 +26,15 @@ public class AppEntryPoint extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        gameScreen = new GameScreen();
+        Runnable goToPreparation = () -> screenManager.goTo(preparationScreen.id());
+        gameScreen = new GameScreen(goToPreparation);
         preparationScreen = new PreparationScreen(shipPositions -> {
             gameScreen.setShipsPositions(shipPositions);
             screenManager.goTo(gameScreen.id());
         });
-        homeScreen = new HomeScreen(e -> screenManager.goTo(preparationScreen.id()));
+        homeScreen = new HomeScreen(goToPreparation);
         screenManager = new ScreenManager(WIDTH, HEIGHT, homeScreen, preparationScreen, gameScreen);
-        screenManager.goTo(homeScreen.id());
+        screenManager.home();
         var scene = new Scene(new StackPane(screenManager.root()), WIDTH, HEIGHT);
         scene.getStylesheets().add("style.css");
         stage.setScene(scene);

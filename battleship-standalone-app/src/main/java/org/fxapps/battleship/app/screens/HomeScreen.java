@@ -1,7 +1,5 @@
 package org.fxapps.battleship.app.screens;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,10 +9,10 @@ import javafx.scene.layout.BorderPane;
 
 public class HomeScreen implements Screen {
 
-    private EventHandler<ActionEvent> startAction;
+    private Runnable startAction;
     BorderPane borderPane;
 
-    public HomeScreen(EventHandler<ActionEvent> startAction) {
+    public HomeScreen(Runnable startAction) {
         super();
         this.startAction = startAction;
         init();
@@ -28,7 +26,7 @@ public class HomeScreen implements Screen {
         lblTop.getStyleClass().add("lbl-app-title");
         btnStart.getStyleClass().add("btn-start");
 
-        btnStart.setOnAction(startAction);
+        btnStart.setOnAction(e -> startAction.run());
         borderPane.setTop(lblTop);
         borderPane.setCenter(btnStart);
 
@@ -55,7 +53,7 @@ public class HomeScreen implements Screen {
     @Override
     public void onShow() {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

@@ -40,7 +40,7 @@ public class PreparationScreen implements Screen {
         canvas = new Canvas(550, 550);
         cbShips = new ComboBox<>();
         root = new BorderPane();
-        tbIsVertical = new ToggleButton("Vertical");
+        tbIsVertical = new ToggleButton("Horizontal");
 
         initCbShips();
 
@@ -50,8 +50,12 @@ public class PreparationScreen implements Screen {
         btnStart.getStyleClass().add("btn-start-game");
         btnStart.disableProperty().bind(cbShips.disableProperty().not());
         btnStart.setPrefSize(canvas.getWidth(), 100);
+        tbIsVertical.setPrefWidth(100);
         btnStart.setOnAction(e -> onPreparationFinished.accept(board.getShipsPositions()));
         btnRandom.setOnAction(e -> {
+            if (board.getShipsPositions().size() == Ship.values().length) {
+                reset();
+            }
             board.addRandomShipPositions();
             cbShips.getItems().clear();
             paintBoard();
@@ -70,6 +74,13 @@ public class PreparationScreen implements Screen {
 
         cbShips.getItems().addListener((Observable obs) -> cbShips.setDisable(cbShips.getItems().isEmpty()));
         tbIsVertical.disableProperty().bind((cbShips.disableProperty()));
+        tbIsVertical.selectedProperty().addListener(v -> {
+            if (tbIsVertical.isSelected()) {
+                tbIsVertical.setText("Vertical");
+            } else {
+                tbIsVertical.setText("Horizontal");
+            }
+        });
     }
 
     private void reset() {

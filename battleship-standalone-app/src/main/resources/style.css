@@ -2,7 +2,7 @@
 Built in classes
 */
 .root {
-	-fx-background-color: #add8e6;
+	-fx-background-color: lightsteelblue;
 }
 
 .label {
@@ -17,8 +17,8 @@ Built in classes
 	-fx-font-weight: bold;
 	-fx-background-radius: 30;
 	-fx-background-insets: 0, 1, 2, 3, 0;
-	-fx-background-color: steelblue; -fx-effect : dropshadow( three-pass-box,
-	rgba( 0, 0, 0, 0.6), 5, 0.0, 0, 1);
+	-fx-background-color: steelblue;
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 	-fx-background-insets: 0, 1, 2, 3, 0;
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
@@ -53,7 +53,7 @@ Built in classes
 	-fx-background-color: firebrick;
 }
 
-.toggle-button:selected, .button:pressed {
+.button:pressed {
 	-fx-text-fill: white;
 	-fx-font-weight: bold;
 	-fx-background-radius: 30;
@@ -80,8 +80,8 @@ Custom Classes
 
 .lbl-app-title {
 	-fx-font-weight: bold;
-	-fx-text-fill: lightsteelblue;
-	-fx-effect: innershadow(gaussian, steelblue, 10, 0.5, 0, 0);
+	-fx-text-fill: cadetblue;
+	-fx-effect: innershadow(gaussian, darkslateblue, 10, 0.5, 0, 0);
 	-fx-font-size: 80px
 }
 
@@ -92,8 +92,54 @@ Custom Classes
 .btn-close:hover {
 	-fx-opacity: 1.0;
 }
+
+.btn-fire {
+	-fx-font-size: 25px;
+}
+
+.lbl-fireInfo {
+	-fx-font-size: 15px;
+	-fx-text-fill: azure;
+	-fx-text-alignment: CENTER
+}
+
+.lbl-fireInfo .text {
+	-fx-stroke: darkblue;
+	-fx-stroke-width: 1px;
+}
+
 .lbl-screen-title {
 	-fx-font-weight: bold;
 	-fx-text-fill: steelblue;
 	-fx-font-size: 20px;
+}
+
+.lbl-end-winner {
+	-fx-font-weight: bold;
+	-fx-text-fill: mediumturquoise;
+	-fx-font-size: 30px;
+}
+
+.lbl-end-winner .text {
+	-fx-stroke: darkblue;
+	-fx-stroke-width: 1px;
+}
+
+.lbl-end-loser {
+	-fx-font-weight: bold;
+	-fx-text-fill: lightslategray;
+	-fx-font-size: 30px;
+}
+
+.lbl-end-loser .text {
+	-fx-stroke: darkgray;
+	-fx-stroke-width: 1px;
+}
+
+.vb-end {
+	-fx-background-color: lightsteelblue;
+	-fx-border-color: darkblue;
+	-fx-border-insets: 2;
+	-fx-border-width: 4;
+	-fx-border-style: solid;
 }

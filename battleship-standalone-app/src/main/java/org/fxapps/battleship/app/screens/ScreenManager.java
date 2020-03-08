@@ -85,6 +85,9 @@ public class ScreenManager {
         });
     }
 
+    public void home() {
+        goTo(homeScren.id());
+    }
     public void goTo(String id) {
         currentScreen = screens.stream()
                                .filter(s -> s.id().equals(id)).findFirst()
