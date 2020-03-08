@@ -1,5 +1,8 @@
 package org.fxapps.battleship.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ShipPosition {
 
     private Ship ship;
@@ -8,6 +11,7 @@ public class ShipPosition {
     private int endX;
     private int endY;
     private boolean isVertical;
+    private List<Location> locations;
 
     public static ShipPosition horizontal(Ship ship, int x, int y) {
         return create(ship, x, y, false);
@@ -34,6 +38,12 @@ public class ShipPosition {
             shipPosition.endY = y;
             shipPosition.endX = x + ship.getSpaces() - 1;
         }
+        shipPosition.locations = new ArrayList<>();
+        for (int i = x; i <= shipPosition.endX; i++) {
+            for (int j = y; j <= shipPosition.endY; j++) {
+                shipPosition.locations.add(Location.of(i, j));
+            }
+        }
         return shipPosition;
     }
 
@@ -59,6 +69,10 @@ public class ShipPosition {
 
     public int getEndY() {
         return endY;
+    }
+
+    public List<Location> locations() {
+        return locations;
     }
 
     @Override
