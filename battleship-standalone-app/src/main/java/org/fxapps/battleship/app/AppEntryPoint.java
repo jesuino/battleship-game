@@ -12,8 +12,8 @@ import org.fxapps.battleship.app.screens.ScreenManager;
 
 public class AppEntryPoint extends Application {
 
-    private static final int WIDTH = 600;
-    private static final int HEIGHT = 800;
+    private static final int WIDTH = 800;
+    private static final int HEIGHT = 1000;
 
     private ScreenManager screenManager;
     Screen preparationScreen;
@@ -28,8 +28,8 @@ public class AppEntryPoint extends Application {
     public void start(Stage stage) throws Exception {
         Runnable goToPreparation = () -> screenManager.goTo(preparationScreen.id());
         gameScreen = new GameScreen(goToPreparation);
-        preparationScreen = new PreparationScreen(shipPositions -> {
-            gameScreen.setShipsPositions(shipPositions);
+        preparationScreen = new PreparationScreen(gamePreparationData -> {
+            gameScreen.setGamePreparationData(gamePreparationData);
             screenManager.goTo(gameScreen.id());
         });
         homeScreen = new HomeScreen(goToPreparation);

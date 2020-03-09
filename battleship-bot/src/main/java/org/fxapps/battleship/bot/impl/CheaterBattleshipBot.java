@@ -40,8 +40,12 @@ public class CheaterBattleshipBot extends BattleshipRandomBot {
     }
 
     private Location cheatGuess() {
-        int pos = random.nextInt(validLocation.size());
-        Location location = validLocation.remove(pos);
+        Location location;
+        do {
+            int pos = random.nextInt(validLocation.size());
+            location = validLocation.remove(pos);
+        } while (history.contains(location));
+
         history.add(location);
         return location;
     }

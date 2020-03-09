@@ -45,14 +45,6 @@ Built in classes
 	-fx-cursor: HAND;
 }
 
-.danger {
-	-fx-background-color: maroon;
-}
-
-.danger:hover {
-	-fx-background-color: firebrick;
-}
-
 .button:pressed {
 	-fx-text-fill: white;
 	-fx-font-weight: bold;
@@ -97,15 +89,26 @@ Custom Classes
 	-fx-font-size: 25px;
 }
 
-.lbl-fireInfo {
-	-fx-font-size: 15px;
+.lbl-playerguessInfo {
+	-fx-font-size: 20px;
 	-fx-text-fill: azure;
 	-fx-text-alignment: CENTER
 }
 
-.lbl-fireInfo .text {
+.lbl-playerguessInfo .text {
 	-fx-stroke: darkblue;
 	-fx-stroke-width: 1px;
+}
+
+.lbl-botguessInfo {
+	-fx-font-size: 9px;
+	-fx-text-fill: indianred;
+	-fx-text-alignment: CENTER
+}
+
+.lbl-botguessInfo .text {
+	-fx-stroke: white;
+	-fx-stroke-width: 0.5px;
 }
 
 .lbl-screen-title {
@@ -142,4 +145,25 @@ Custom Classes
 	-fx-border-insets: 2;
 	-fx-border-width: 4;
 	-fx-border-style: solid;
+}
+
+.btn-clear {
+	-fx-graphic: url('./images/trash.png');
+}
+
+.btn-random {
+	-fx-graphic: url('./images/random.png');
+}
+
+.tb-vertical {
+	-fx-graphic: url('./images/horizontal.png');
+}
+
+.tb-vertical:selected {
+	-fx-graphic: url('./images/vertical.png');
+}
+
+.game-canvas:disabled {
+	-fx-opacity: 0.9;
+	
 }
