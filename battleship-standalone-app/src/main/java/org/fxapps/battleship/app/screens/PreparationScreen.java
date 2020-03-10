@@ -16,7 +16,7 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.fxapps.battleship.app.model.Difficult;
+import org.fxapps.battleship.app.model.Difficulty;
 import org.fxapps.battleship.app.model.GamePreparationData;
 import org.fxapps.battleship.app.utils.BattleshipPainter;
 import org.fxapps.battleship.model.Board;
@@ -39,8 +39,8 @@ public class PreparationScreen implements Screen {
         var btnRandom = new Button();
         var btnReset = new Button();
         var btnStart = new Button("START");
-        var hbShipConf = new HBox(5);
-        var cbDifficult = new ComboBox<Difficult>();
+        var hbShipConf = new HBox(10);
+        var cbDifficulty = new ComboBox<Difficulty>();
 
         canvas = new Canvas(700, 700);
         cbShips = new ComboBox<>();
@@ -52,21 +52,38 @@ public class PreparationScreen implements Screen {
 
         btnReset.getStyleClass().add("btn-clear");
         btnReset.setOnAction(e -> reset());
-
         btnStart.getStyleClass().add("btn-start-game");
         btnStart.disableProperty().bind(cbShips.disableProperty().not());
         btnStart.setPrefSize(canvas.getWidth(), 100);
+        btnRandom.getStyleClass().add("btn-random");
+        cbDifficulty.getItems().addAll(Difficulty.values());
+        cbDifficulty.getSelectionModel().select(Difficulty.MEDIUM);
 
-        cbDifficult.getItems().addAll(Difficult.values());
-        cbDifficult.getSelectionModel().select(Difficult.MEDIUM);
+        hbShipConf.getChildren().addAll(new Label("Ship "),
+                                        cbShips,
+                                        tbIsVertical,
+                                        btnRandom,
+                                        btnReset,
+                                        new Separator(Orientation.VERTICAL),
+                                        new Label("Difficulty "),
+                                        cbDifficulty);
+        hbShipConf.setAlignment(Pos.CENTER);
+        hbShipConf.getStyleClass().add("toolbar");
+        
+        root.getChildren().addAll(hbShipConf, buildBoardRepresentation(), btnStart);
+        root.setAlignment(Pos.CENTER);
 
+        BorderPane.setMargin(btnStart, new Insets(10));
+
+        cbShips.getItems().addListener((Observable obs) -> cbShips.setDisable(cbShips.getItems().isEmpty()));
+        tbIsVertical.disableProperty().bind((cbShips.disableProperty()));
+        
         btnStart.setOnAction(e -> {
-            var gameData = GamePreparationData.of(board.getShipsPositions(),
-                                                  cbDifficult.getSelectionModel()
-                                                             .getSelectedItem());
+            var difficult = cbDifficulty.getSelectionModel().getSelectedItem();
+            var shipsPositions = board.getShipsPositions();
+            var gameData = GamePreparationData.of(shipsPositions, difficult);
             onPreparationFinished.accept(gameData);
         });
-        btnRandom.getStyleClass().add("btn-random");
         btnRandom.setOnAction(e -> {
             if (board.getShipsPositions().size() == Ship.values().length) {
                 reset();
@@ -75,23 +92,6 @@ public class PreparationScreen implements Screen {
             cbShips.getItems().clear();
             paintBoard();
         });
-
-        hbShipConf.getChildren().addAll(new Label("Ship "),
-                                        cbShips,
-                                        tbIsVertical,
-                                        btnRandom,
-                                        btnReset,
-                                        new Separator(Orientation.VERTICAL),
-                                        new Label("Difficult "),
-                                        cbDifficult);
-        hbShipConf.setAlignment(Pos.CENTER);
-        root.getChildren().addAll(hbShipConf, buildBoardRepresentation(), btnStart);
-        root.setAlignment(Pos.CENTER);
-
-        BorderPane.setMargin(btnStart, new Insets(10));
-
-        cbShips.getItems().addListener((Observable obs) -> cbShips.setDisable(cbShips.getItems().isEmpty()));
-        tbIsVertical.disableProperty().bind((cbShips.disableProperty()));
     }
 
     private void reset() {

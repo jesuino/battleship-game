@@ -8,10 +8,10 @@ public class GamePreparationData {
 
     private List<ShipPosition> shipsPositions;
 
-    private Difficult difficult;
+    private Difficulty difficult;
 
     private GamePreparationData(List<ShipPosition> shipsPositions,
-                                Difficult difficult) {
+                                Difficulty difficult) {
         this.shipsPositions = shipsPositions;
         this.difficult = difficult;
     }
@@ -20,11 +20,11 @@ public class GamePreparationData {
         return shipsPositions;
     }
 
-    public Difficult getDifficult() {
+    public Difficulty getDifficult() {
         return difficult;
     }
 
-    public static GamePreparationData of(List<ShipPosition> shipsPositions, Difficult difficult) {
+    public static GamePreparationData of(List<ShipPosition> shipsPositions, Difficulty difficult) {
         return new GamePreparationData(shipsPositions, difficult);
     }
 

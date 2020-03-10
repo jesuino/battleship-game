@@ -1,6 +1,6 @@
 package org.fxapps.battleship.app.model;
 
-public enum Difficult {
+public enum Difficulty {
 
     HARDEST(70),
     HARD(50),
@@ -10,7 +10,7 @@ public enum Difficult {
 
     int hitProbability;
 
-    Difficult(int hitProbability) {
+    Difficulty(int hitProbability) {
         this.hitProbability = hitProbability;
     }
 

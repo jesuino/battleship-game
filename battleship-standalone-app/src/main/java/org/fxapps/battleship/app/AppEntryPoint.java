@@ -1,9 +1,12 @@
 package org.fxapps.battleship.app;
 
+import java.util.function.Consumer;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.fxapps.battleship.app.model.GamePreparationData;
 import org.fxapps.battleship.app.screens.GameScreen;
 import org.fxapps.battleship.app.screens.HomeScreen;
 import org.fxapps.battleship.app.screens.PreparationScreen;
@@ -27,14 +30,17 @@ public class AppEntryPoint extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         Runnable goToPreparation = () -> screenManager.goTo(preparationScreen.id());
-        gameScreen = new GameScreen(goToPreparation);
-        preparationScreen = new PreparationScreen(gamePreparationData -> {
+        Consumer<GamePreparationData> preparationDataConsumer = gamePreparationData -> {
             gameScreen.setGamePreparationData(gamePreparationData);
             screenManager.goTo(gameScreen.id());
-        });
+        };
+
+        gameScreen = new GameScreen(goToPreparation);
+        preparationScreen = new PreparationScreen(preparationDataConsumer);
         homeScreen = new HomeScreen(goToPreparation);
         screenManager = new ScreenManager(WIDTH, HEIGHT, homeScreen, preparationScreen, gameScreen);
         screenManager.home();
+
         var scene = new Scene(new StackPane(screenManager.root()), WIDTH, HEIGHT);
         scene.getStylesheets().add("style.css");
         stage.setScene(scene);

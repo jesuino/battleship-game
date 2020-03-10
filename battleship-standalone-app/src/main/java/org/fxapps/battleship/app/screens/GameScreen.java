@@ -83,8 +83,7 @@ public class GameScreen implements Screen {
     }
 
     public GameScreen(Runnable homeScreenCallback) {
-        this.homeScreenCallback = homeScreenCallback != null ? homeScreenCallback : () -> {
-        };
+        this.homeScreenCallback = homeScreenCallback;
         buildUI();
     }
 
@@ -127,7 +126,7 @@ public class GameScreen implements Screen {
         playerCanvas = new Canvas(250, 250);
         lblPlayerGuessResult = new Label();
         lblBotGuessResult = new Label();
-        
+
         playerCanvas.getStyleClass().add("game-canvas");
         player2Canvas.getStyleClass().add("game-canvas");
         player2Canvas.setOnMouseClicked(this::updateTarget);
@@ -170,7 +169,7 @@ public class GameScreen implements Screen {
 
         vbGame.disableProperty().bind(playerHitAnimation.statusProperty()
                                                         .isEqualTo(Status.RUNNING)
-                                                       .or(botHitAnimation.statusProperty().isEqualTo(Status.RUNNING))
+                                                        .or(botHitAnimation.statusProperty().isEqualTo(Status.RUNNING))
                                                         .or(gameStateProperty.isNotEqualTo(GameState.STARTED)));
         playerCanvas.disableProperty().bind(vbGame.disableProperty());
         vbGameOverOverlay.visibleProperty().bind(gameStateProperty.isEqualTo(GameState.FINISHED));
@@ -181,7 +180,7 @@ public class GameScreen implements Screen {
             }
             paintBoards();
         });
-        
+
     }
 
     private void updateLabels() {
@@ -260,11 +259,11 @@ public class GameScreen implements Screen {
                           tileWidth,
                           tileHeight);
             targetLocationProperty.set(location);
+            if (e.getClickCount() == 2) {
+                playerGuess();
+            }
         }
 
-        if (e.getClickCount() == 2) {
-            playerGuess();
-        }
     }
 
     private void paintPlayerBoard() {
