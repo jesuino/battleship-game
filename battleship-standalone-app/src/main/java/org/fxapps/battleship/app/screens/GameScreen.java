@@ -17,6 +17,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.Label;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.Separator;
@@ -78,6 +79,8 @@ public class GameScreen implements Screen {
 
     private Labeled lblMisses;
 
+    private Button btnFire;
+
     public GameScreen() {
         buildUI();
     }
@@ -109,27 +112,40 @@ public class GameScreen implements Screen {
         paintBoards();
     }
 
+    @Override
+    public void resize(double width, double height) {
+
+        player2Canvas.setWidth(width - 40);
+        player2Canvas.setHeight(height - (height / 4) - 30);
+        btnFire.setMinSize(width, height / 20);
+
+        if (this.manager != null) {
+            paintBoards();
+        }
+    }
+
     public void setGamePreparationData(GamePreparationData gamePreparationData) {
         this.gamePreparationData = gamePreparationData;
     }
 
     private void buildUI() {
         var vbGameOverOverlay = new VBox(20);
-        var btnFire = new Button("Fire");
         var btnNewGame = new Button("New Game");
-
+        
+        btnFire = new Button("Fire");
         lblEndTitle = new Label("You Lose!");
         lblHits = new Label("Total Hits: 20");
         lblMisses = new Label("Total Miss: 30");
         lblTime = new Label("Time: 30 minutes");
         player2Canvas = new Canvas(700, 700);
-        playerCanvas = new Canvas(250, 250);
+        playerCanvas = new Canvas(100, 100);
         lblPlayerGuessResult = new Label();
         lblBotGuessResult = new Label();
 
-        playerCanvas.getStyleClass().add("game-canvas");
+        playerCanvas.getStyleClass().add("game-canvas");        
         player2Canvas.getStyleClass().add("game-canvas");
         player2Canvas.setOnMouseClicked(this::updateTarget);
+        player2Canvas.setOnTouchReleased(e -> this.updateTarget(null));
 
         playerHitAnimation = buildTransitions(lblPlayerGuessResult, () -> {
             targetLocationProperty.set(null);
@@ -143,11 +159,12 @@ public class GameScreen implements Screen {
         lblBotGuessResult.setOpacity(0.0);
 
         btnFire.disableProperty().bind(targetLocationProperty.isNull().or(isPlayerTurnProperty.not()));
-        btnFire.setMinSize(player2Canvas.getWidth(), 50);
-        btnFire.getStyleClass().addAll("danger", "btn-fire");
-        btnFire.setOnMouseClicked(e -> playerGuess());
+        
+        btnFire.setMinSize(player2Canvas.getWidth(), 70);
 
-        HBox.setMargin(playerCanvas, new Insets(5));
+        btnFire.setContentDisplay(ContentDisplay.RIGHT);
+        btnFire.getStyleClass().add("btn-fire");
+        btnFire.setOnMouseClicked(e -> playerGuess());
 
         lblEndTitle.getStyleClass().add("lbl-end-winner");
         vbGameOverOverlay.getStyleClass().add("vb-end");
@@ -155,10 +172,13 @@ public class GameScreen implements Screen {
         vbGameOverOverlay.getChildren().addAll(lblEndTitle, lblTime, lblHits, lblMisses, btnNewGame);
         vbGameOverOverlay.setAlignment(Pos.CENTER);
         vbGameOverOverlay.setMaxSize(250, 250);
+        
+        var playerBoardContainer = new StackPane(player2Canvas, lblPlayerGuessResult);
+        
         VBox.setMargin(lblEndTitle, new Insets(5, 0, 10, 0));
-
+        VBox.setMargin(playerBoardContainer, new Insets(5, 0, 0, 0));
         var vbGame = new VBox(5,
-                              new StackPane(player2Canvas, lblPlayerGuessResult),
+                              playerBoardContainer,
                               btnFire,
                               new Separator(Orientation.HORIZONTAL),
                               new StackPane(playerCanvas, lblBotGuessResult));
@@ -211,9 +231,7 @@ public class GameScreen implements Screen {
             paintBoards();
             onFinished.run();
         });
-
         return animation;
-
     }
 
     private void cleanUp() {

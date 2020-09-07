@@ -61,8 +61,8 @@ public class BattleshipPainter {
     public static Location getLocationOnBoard(MouseEvent e, double width, double height) {
         var x = e.getX();
         var y = e.getY();
-        int posX = (int) (x / (width / Board.DEFAULT_COLS));
-        int posY = (int) (y / (height / Board.DEFAULT_ROWS));
+        var posX = (int) (x / (width / Board.DEFAULT_COLS));
+        var posY = (int) (y / (height / Board.DEFAULT_ROWS));
         return Location.of(posX, posY);
     }
 
@@ -83,15 +83,17 @@ public class BattleshipPainter {
     }
 
     private static void paintEmptyBoard(GraphicsContext ctx, int boardCols, int boardRows, final double tileWidth, final double tileHeight) {
-        ctx.setLineWidth(0.1);
+        ctx.setLineWidth(0.2);
         ctx.setStroke(Color.GAINSBORO);
         ctx.setFont(Font.font(tileHeight / 5));
+
+        ctx.setFill(SEA_COLOR);
+        ctx.fillRect(0, 0, tileWidth * boardCols, tileHeight * boardCols);
+
         for (int i = 0; i < boardCols; i++) {
             for (int j = 0; j < boardRows; j++) {
                 var x = i * tileWidth;
                 var y = j * tileHeight;
-                ctx.setFill(SEA_COLOR);
-                ctx.fillRect(x, y, tileWidth, tileHeight);
                 ctx.strokeRect(x, y, tileWidth, tileHeight);
                 if (i == 0) {
                     ctx.setFill(Color.WHITE);

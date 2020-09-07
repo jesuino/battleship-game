@@ -103,4 +103,10 @@ public class ScreenManager {
         return root;
     }
 
+    public void resize(double width, double height) {
+        root.setPrefSize(width, height);
+        root.setMinSize(width, height);
+        screens.forEach(s -> s.resize(width, height));
+    }
+
 }

@@ -4,12 +4,16 @@ import javafx.scene.Node;
 
 public interface Screen {
     
-    public String id();
+    String id();
 
-    public Node content();
+    Node content();
     
-    public String name();
+    String name();
     
-    public void onShow();
+    void onShow();
+
+    default void resize(double width, double height) {
+        // do nothing by default
+    }
     
 }

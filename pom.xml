@@ -21,6 +21,7 @@
 		<module>battleship-api</module>
 		<module>battleship-bot</module>
 		<module>battleship-standalone-app</module>
+		<module>battleship-apps</module>		
 	</modules>
 
 	<dependencies>

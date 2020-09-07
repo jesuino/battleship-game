@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -40,7 +41,7 @@ public class PreparationScreen implements Screen {
         var btnReset = new Button();
         var btnStart = new Button("START");
         var hbShipConf = new HBox(10);
-        var cbDifficulty = new ComboBox<Difficulty>();
+        var cbDifficulty = new ChoiceBox<Difficulty>();
 
         canvas = new Canvas(700, 700);
         cbShips = new ComboBox<>();
@@ -59,13 +60,14 @@ public class PreparationScreen implements Screen {
         cbDifficulty.getItems().addAll(Difficulty.values());
         cbDifficulty.getSelectionModel().select(Difficulty.MEDIUM);
 
-        hbShipConf.getChildren().addAll(new Label("Ship "),
-                                        cbShips,
-                                        tbIsVertical,
+        // removing for now the hability to manually add ships
+        hbShipConf.getChildren().addAll(//new Label("Ship "),
+                                        //cbShips,
+                                        //tbIsVertical,
                                         btnRandom,
                                         btnReset,
                                         new Separator(Orientation.VERTICAL),
-                                        new Label("Difficulty "),
+                                    //    new Label("Difficulty "),
                                         cbDifficulty);
         hbShipConf.setAlignment(Pos.CENTER);
         hbShipConf.getStyleClass().add("toolbar");
@@ -84,14 +86,17 @@ public class PreparationScreen implements Screen {
             var gameData = GamePreparationData.of(shipsPositions, difficult);
             onPreparationFinished.accept(gameData);
         });
-        btnRandom.setOnAction(e -> {
-            if (board.getShipsPositions().size() == Ship.values().length) {
-                reset();
-            }
-            board.addRandomShipPositions();
-            cbShips.getItems().clear();
-            paintBoard();
-        });
+
+        btnRandom.setOnAction(e -> addRandomShips());
+    }
+
+    private void addRandomShips() {
+        if (board.getShipsPositions().size() == Ship.values().length) {
+            reset();
+        }
+        board.addRandomShipPositions();
+        cbShips.getItems().clear();
+        paintBoard();
     }
 
     private void reset() {
@@ -108,6 +113,8 @@ public class PreparationScreen implements Screen {
 
     private Canvas buildBoardRepresentation() {
         paintBoard();
+        // Removing manual ship for now.
+        /*
         canvas.setOnMouseClicked(e -> {
             Ship ship = cbShips.getSelectionModel().getSelectedItem();
             if (ship != null) {
@@ -126,11 +133,12 @@ public class PreparationScreen implements Screen {
             }
             paintBoard();
         });
+        
         canvas.setOnMouseExited(e -> {
             Ship ship = cbShips.getSelectionModel().getSelectedItem();
             board.removeShip(ship);
             paintBoard();
-        });
+        });*/
         return canvas;
     }
 
@@ -163,6 +171,14 @@ public class PreparationScreen implements Screen {
     @Override
     public void onShow() {
         reset();
+        addRandomShips();
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        canvas.setWidth(width);
+        canvas.setHeight(height - (height / 4) - 20);
+        paintBoard();
     }
 
 }

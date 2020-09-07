@@ -10,6 +10,13 @@ import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toList;
 
+/**
+ * 
+ * A battleship board representation
+ * 
+ * @author wsiqueir
+ *
+ */
 public class Board {
 
     Random random = new Random();
@@ -142,7 +149,6 @@ public class Board {
         } else {
             validateHorizontalShip(x, y, shipPosition.getEndX());
         }
-
     }
 
     private void validateVerticalShip(int x, int y, int endY) {

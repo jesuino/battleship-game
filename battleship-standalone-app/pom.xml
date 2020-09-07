@@ -11,7 +11,7 @@
 	<name>Battleship Standalone App</name>
 
 	<properties>
-		<javafx.version>11.0.2</javafx.version>
+		<javafx.version>14.0.2.1</javafx.version>
 	</properties>
 
 	<dependencies>

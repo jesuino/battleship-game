@@ -59,11 +59,11 @@ Built in classes
 Custom Classes
 */
 .btn-start {
-	-fx-font-size: 100px
+	-fx-font-size: 80px
 }
 
 .btn-start-game {
-	-fx-font-size: 40px
+	-fx-font-size: 32px
 }
 
 .lbl-bottom {
@@ -74,11 +74,23 @@ Custom Classes
 	-fx-font-weight: bold;
 	-fx-text-fill: cadetblue;
 	-fx-effect: innershadow(gaussian, darkslateblue, 10, 0.5, 0, 0);
-	-fx-font-size: 80px
+	-fx-font-size: 70px;
+}
+
+.title-normal {
+	-fx-font-size: 70px;
+}
+
+.title-small {
+	-fx-font-size: 35px;
+}
+
+.title-smallest {
+	-fx-font-size: 20px;
 }
 
 .btn-close {
-	-fx-opacity: 0.2;
+	-fx-opacity: 0.5;
 }
 
 .btn-close:hover {
@@ -86,7 +98,12 @@ Custom Classes
 }
 
 .btn-fire {
-	-fx-font-size: 25px;
+	-fx-font-size: 15px;
+	-fx-background-color: orangered;
+}
+
+.btn-fire:hover {
+	-fx-background-color: red;
 }
 
 .lbl-playerguessInfo {
@@ -94,6 +111,7 @@ Custom Classes
 	-fx-text-fill: azure;
 	-fx-text-alignment: CENTER
 }
+
 
 .lbl-playerguessInfo .text {
 	-fx-stroke: darkblue;

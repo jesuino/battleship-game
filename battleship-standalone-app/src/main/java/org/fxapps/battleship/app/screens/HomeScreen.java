@@ -6,11 +6,13 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 
 public class HomeScreen implements Screen {
 
     private Runnable startAction;
-    BorderPane borderPane;
+    private BorderPane borderPane;
+    private Label lblTop;
 
     public HomeScreen(Runnable startAction) {
         super();
@@ -19,11 +21,12 @@ public class HomeScreen implements Screen {
     }
 
     public void init() {
-        var lblTop = new Label("BattleshipFX");
         var btnStart = new Button("Start");
-
+        
+        lblTop = new Label("BattleshipFX");
         borderPane = new BorderPane();
         lblTop.getStyleClass().add("lbl-app-title");
+        lblTop.getStyleClass().add("normal-title");
         btnStart.getStyleClass().add("btn-start");
 
         btnStart.setOnAction(e -> startAction.run());
@@ -49,11 +52,29 @@ public class HomeScreen implements Screen {
     public String name() {
         return "Home";
     }
-
     @Override
     public void onShow() {
-        // TODO Auto-generated method stub
-
+        // do nothing
+        
     }
 
+    @Override
+    public void resize(double width, double height) {
+        if (lblTop == null) return;
+        if (width <= 300) {
+            lblTop.getStyleClass().remove("title-small");
+            lblTop.getStyleClass().remove("title-normal");
+            lblTop.getStyleClass().add("title-smallest");
+        }
+        else if (width <= 530) {
+            lblTop.getStyleClass().remove("title-smallest");
+            lblTop.getStyleClass().remove("title-normal");
+            lblTop.getStyleClass().add("title-small");
+        }
+       else {
+           lblTop.getStyleClass().remove("title-smallest");
+           lblTop.getStyleClass().remove("title-small");
+           lblTop.getStyleClass().add("title-normal");
+        }        
+    }
 }
